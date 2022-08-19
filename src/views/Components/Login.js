@@ -1,9 +1,8 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 import {
   Button,
   Card,
-  CardHeader,
   CardBody,
   FormGroup,
   Form,
@@ -13,12 +12,16 @@ import {
   InputGroup,
   Row,
   Col,
+  ModalBody,
+  ModalHeader,
+  Modal,
 } from "reactstrap";
+import swal from "sweetalert";
 
 const Login = () => {
-  const history = useHistory();
 
-  const [userOAHH, setUserOAHH] = useState("oahh12345678@gmail.com");
+  const history = useHistory();
+  const [userEmail, setEmail] = useState("oahh12345678@gmail.com");
   const [userPass, setuserPass] = useState("obed123");
   const [errorMessage, setErrorMessage] = useState("");
 
@@ -26,24 +29,88 @@ const Login = () => {
     const inEmail = document.getElementById("inEmail").value;
     const inPass = document.getElementById("inPass").value;
 
-    if (inEmail === userOAHH && inPass === userPass) {
-      history.push("/admin/index");
+    if (inEmail === userEmail && inPass === userPass) {
+      history.push("/admin/empleados");
       setErrorMessage("");
     } else {
-      alert("Usuario/Contraseña incorrectas");
+      swal({
+        title: "Error",
+        text: "Usuario/Contraseña incorrectas",
+        icon: "warning",
+        button: "Aceptar"
+      });
     }
   };
+
+  const [data, setData] = useState([]);
+  //const [formData, setFormData] = useState(defaultFormValues());
+  const [isVisible, setIsVisible] = useState(false);
+  //const { setRefrescar2 } = route.params;
+
+  // const defaultFormValues = () => {
+  //   return {
+  //     email: "",
+  //     password: "",
+  //   };
+  // }
+
+  // const logIn = async () => {
+  //   try {
+  //     const response = await fetch("http://localhost:8080/api/auth", {
+  //       method: "POST",
+  //       headers: { "Content-Type": "application/json" },
+  //       body: JSON.stringify({
+  //         email: formData.email,
+  //         password: formData.password,
+  //       }),
+  //     }).then((response) => {
+  //       setIsVisible(false);
+  //       setRefrescar2(true);
+  //     });
+  //   } catch (e) {
+  //     console.log("No se inició sesión...");
+  //   }
+  // };
+
+  // const onSubmit = () => {
+  //   if (
+  //     (formData.email).length === 0 || (formData.password).length === 0
+      
+  //   ) {
+  //     console.log("Los campos no deben estar vacíos");
+  //   } else {
+  //     setIsVisible(true);
+  //     logIn();
+  //   }
+  // };
+
+  // const dataCath = (event, type) => {
+  //   setFormData({ ...formData, [type]: event });
+  //   console.log({ formData });
+  // };
+
+  const [modal, setModal] = useState(false);
+  const toggle = () => setModal(!modal);
+
+  const sendEmail = () => {
+    swal({
+      title: "Se envió la contraseña al correo",
+      icon: "success",
+      button: "Aceptar",
+    });
+  }
+
   return (
     <>
       <Col lg="5" md="7" style={{ marginTop: "-5%" }}>
-        <Card className="bg-secondary shadow border-0">
+        <Card className="bg-white shadow border-0">
           <CardBody className="px-lg-5 py-lg-5" style={{ textAlign: "center" }}>
             <img
               alt="..."
               src={require("../../assets/img/logoAccionTI.png").default}
               style={{ maxWidth: "500px", maxHeight: "60px" }}
             />
-            <br />
+            <br /> 
             <br />
             <div className="text-center text-muted mb-4">
               <small>Ingresa los datos correspondientes</small>
@@ -111,22 +178,58 @@ const Login = () => {
             <a
               className="text-light"
               href="#pablo"
-              onClick={(e) => e.preventDefault()}
+              onClick={toggle}
             >
-              <small>¿Olvidastes tu contraseña?</small>
+              <small>¿Olvidaste tu contraseña?</small>
             </a>
           </Col>
-          {/* <Col className="text-right" xs="6">
-            <a
-              className="text-light"
-              href="#pablo"
-              onClick={(e) => e.preventDefault()}
-            >
-              <small>Crear cuenta</small>
-            </a>
-          </Col> */}
         </Row>
       </Col>
+
+      {/* Modal Envío de Correo */}
+      <Modal isOpen={modal} toggle={toggle} style={{marginTop:"20%"}}>
+        <ModalHeader toggle={toggle} style={{ backgroundColor: "#8ADFE2" }}>
+          <h3 className="mb-0">Recuperar Contraseña:</h3>
+        </ModalHeader>
+        <ModalBody>
+          <Form>
+            <div className="pl-lg-4">
+              <Row>
+                <Col lg="12">
+                  <FormGroup>
+                    <label className="form-control-label">
+                      Correo Electrónico:
+                    </label>
+                    <Input
+                      className="form-control-alternative descripcion"
+                      id="inEmail"
+                      placeholder="Email"
+                      type="text"
+                      required="required"
+                    />
+                  </FormGroup>
+                </Col>
+              </Row>
+            </div>
+            <Button
+              type="submit"
+              color="primary"
+              onClick={toggle}
+              style={{ float: "right" }}
+            >
+              Cancelar
+            </Button>
+            <Button
+              onClick={sendEmail}
+              className="btn btn-success"
+              style={{ float: "right" }}
+            >
+              Enviar
+            </Button>
+          </Form>
+        </ModalBody>
+      </Modal>
+
     </>
   );
 };

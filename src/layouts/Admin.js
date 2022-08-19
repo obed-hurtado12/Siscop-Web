@@ -30,7 +30,7 @@ const Admin = (props) => {
           />
         );
       } else {
-        return null;
+        return null; 
       }
     });
   };
@@ -53,8 +53,8 @@ const Admin = (props) => {
         {...props}
         routes={routes}
         logo={{
-          innerLink: "/admin/index",
-          imgSrc: require("../assets/img/brand/argon-react.png").default,
+          innerLink: "/admin/empleados",
+          imgSrc: require("../assets/img/logoAccionTI.png").default,
           imgAlt: "...",
         }}
       />
@@ -65,7 +65,7 @@ const Admin = (props) => {
         />
         <Switch>
           {getRoutes(routes)}
-          <Redirect from="*" to="/admin/projects" />
+          <Redirect from="*" to="/admin/empleados" />
         </Switch>
         <Container fluid>
           <AdminFooter />

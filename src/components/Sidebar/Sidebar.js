@@ -33,6 +33,7 @@ import {
   Row,
   Col,
 } from "reactstrap";
+import img from "../../assets/img/siscop.png"
 
 var ps;
 
@@ -48,7 +49,7 @@ const Sidebar = (props) => {
   };
   // closes the collapse
   const closeCollapse = () => {
-    setCollapseOpen(false);
+    setCollapseOpen(false); 
   };
   // creates the links that appear in the left menu / Sidebar
   const createLinks = (routes) => {
@@ -85,7 +86,7 @@ const Sidebar = (props) => {
 
   return (
     <Navbar style={{backgroundColor:"black"}}
-      className="navbar-vertical fixed-left navbar-light bg-white"
+      className="navbar-horizontal fixed-left navbar-light bg-white"
       expand="md"
       id="sidenav-main"
     >
@@ -104,10 +105,13 @@ const Sidebar = (props) => {
             <img
               alt={logo.imgAlt}
               className="navbar-brand-img"
-              src={logo.imgSrc}
+              src={img}
+              style={{maxHeight:"100px", maxWidth:"400px"}}
             />
+            {console.log(logo.imgAlt)}
           </NavbarBrand>
         ) : null}
+        {console.log(logo)}
         {/* User */}
         <Nav className="align-items-center d-md-none">
           <UncontrolledDropdown nav>
@@ -198,7 +202,7 @@ const Sidebar = (props) => {
             </Row>
           </div>
           {/* Form */}
-          <Form className="mt-4 mb-3 d-md-none">
+          {/* <Form className="mt-4 mb-3 d-md-none">
             <InputGroup className="input-group-rounded input-group-merge">
               <Input
                 aria-label="Search"
@@ -212,7 +216,7 @@ const Sidebar = (props) => {
                 </InputGroupText>
               </InputGroupAddon>
             </InputGroup>
-          </Form>
+          </Form> */}
           {/* Navigation */}
           <Nav navbar>{createLinks(routes)}</Nav>
         </Collapse>

@@ -22,13 +22,13 @@ const AdminNavbar = () => {
         <Container className="px-4">
           {/* <NavbarBrand to="/" tag={Link}> */}
             {/* AQUI VA EL LOGO SISCOP */}
-            <img
+            {/* <img
               alt="..."
               src={
                 require("../../assets/img/logoAccionTI.png").default
               }
               style={{maxWidth:"500px", maxHeight:"60px"}}
-            />
+            /> */}
           {/* </NavbarBrand> */}
           <button className="navbar-toggler" id="navbar-collapse-main">
             <span className="navbar-toggler-icon" />

@@ -11,8 +11,9 @@ const Login = () => {
                 © {new Date().getFullYear()}{" "}
                 <a
                   className="font-weight-bold ml-1"
-                  href="https://www.creative-tim.com?ref=adr-auth-footer"
+                  href="https://conectatumarketing.net/?fbclid=IwAR2oFp_9W4s8t5wx4JnhWUCX07_kgzi8B3uia7J_a2eIEU9v-hyIi5YfhA4"
                   target="_blank"
+                  style={{color:"white", fontSize:"110%"}}
                 >
                   Acción TI
                 </a>
@@ -22,28 +23,30 @@ const Login = () => {
               <Nav className="nav-footer justify-content-center justify-content-xl-end">
                 <NavItem>
                   <NavLink
-                    href="https://www.creative-tim.com?ref=adr-auth-footer"
+                    href="https://www.facebook.com/AccionTI"
                     target="_blank"
+                    style={{color:"white", fontSize:"110%"}}
                   >
                     Facebook
                   </NavLink>
                 </NavItem>
                 <NavItem>
                   <NavLink
-                    href="https://www.creative-tim.com/presentation?ref=adr-auth-footer"
+                    href="https://www.instagram.com/accionti/"
                     target="_blank"
+                    style={{color:"white", fontSize:"110%"}}
                   >
                     Instagram
                   </NavLink>
                 </NavItem>
-                <NavItem>
+                {/* <NavItem>
                   <NavLink
                     href="http://blog.creative-tim.com?ref=adr-auth-footer"
                     target="_blank"
                   >
                     YouTube
                   </NavLink>
-                </NavItem>
+                </NavItem> */}
                 {/* <NavItem>
                   <NavLink
                     href="https://github.com/creativetimofficial/argon-dashboard/blob/master/LICENSE.md?ref=adr-auth-footer"
