@@ -1,3 +1,4 @@
+
 import {
   Badge,
   Card,
@@ -30,92 +31,75 @@ import {
 import Header from "components/Headers/Header.js";
 import swal from "sweetalert";
 import Carrusel from "components/Carusell/Carrusel";
-import React from "react";
+import React, { useEffect } from "react";
 import { IoIosClipboard, IoIosTrash } from "react-icons/io";
+import BtnModificar from "views/Tools/BtnModificar";
+import BtnEliminar from "views/Tools/BtnEliminar";
+import { useHistory } from "react-router-dom";
 
 const Tables = () => {
+  const history = useHistory();
+  const [mId, setMId] = React.useState(6);
+  const [mName, setMName] = React.useState("");
+  const [mSurname, setMSurname] = React.useState("");
+  const [mLastName, setMLastName] = React.useState("");
+  const [mPhone, setMPhone] = React.useState("");
+  const [mCellPhone, setMCellPhone] = React.useState("");
+  const [mEmail, setMEmail] = React.useState("");
+  const [mPass, setMPass] = React.useState("");
+  const [mRol, setMRol] = React.useState(2);
 
-  const [mId, setMId] = React.useState("");
-  const [mName, setMName] = React.useState("Obed");
-  const [mSurname, setMSurname] = React.useState("Hurtado");
-  const [mLastName, setMLastName] = React.useState("Hernández");
-  const [mWorkArea, setMWArea] = React.useState("Sistemas");
-  const [mEmail, setMEmail] = React.useState("oahh12345678@gmail.com");
-  const [mPhone, setMPhone] = React.useState("7773851862");
-  const [mCellPhone, setMCellPhone] = React.useState("7771305580");
-
-  const [empleado, setEmpleado] = React.useState(true)
-
+  const [empleado, setEmpleado] = React.useState(true);
   const [modal, setModal] = React.useState(false);
   const toggle = () => setModal(!modal);
-
   const [modal2, setModal2] = React.useState(false);
   const toggle2 = () => setModal2(!modal2);
 
-  const cambioDatos = (
-    id,
-    name,
-    surname,
-    lastname,
-    workArea,
-    email,
-    phone,
-    cellPhone
-  ) => {
-    setMName(name);
-    setMSurname(surname);
-    setMLastName(lastname);
-    setMWArea(workArea);
-    setMEmail(email);
-    setMPhone(phone);
-    setMCellPhone(cellPhone);
-  };
-
-  const empleados = [
-    {
-      id: 1,
-      name: "Obed Ariel",
-      surname: "Hurtado",
-      lastname: "Hernández",
-      workArea: "Sistemas",
-      email: "oahh12345678@gmail.com",
-      phone: "7773851862",
-      cellPhone: "7771305580",
-    },
-    {
-      id: 2,
-      name: "Noé",
-      surname: "Martínez",
-      lastname: "Flores",
-      workArea: "Servidores",
-      email: "noemtz@gmail.com",
-      phone: "7771234567",
-      cellPhone: "7771234567",
-    },
-    {
-      id: 3,
-      name: "Mario",
-      surname: "Rodríguez",
-      lastname: "González",
-      workArea: "Plataformas",
-      email: "mariordz@gmail.com",
-      phone: "7777654321",
-      cellPhone: "7777654321",
-    },
-    {
-      id: 4,
-      name: "Aldahir",
-      surname: "Gómez",
-      lastname: "García",
-      workArea: "Mercadotecnia",
-      email: "aldahirgmz@gmail.com",
-      phone: "7774242077",
-      cellPhone: "7774242077",
-    },
-  ];
+  // const empleados = [
+  //   {
+  //     id: 1,
+  //     name: "Obed Ariel",
+  //     surname: "Hurtado",
+  //     lastname: "Hernández",
+  //     workArea: "Sistemas",
+  //     email: "oahh12345678@gmail.com",
+  //     phone: "7773851862",
+  //     cellPhone: "7771305580",
+  //   },
+  //   {
+  //     id: 2,
+  //     name: "Noé",
+  //     surname: "Martínez",
+  //     lastname: "Flores",
+  //     workArea: "Servidores",
+  //     email: "noemtz@gmail.com",
+  //     phone: "7771234567",
+  //     cellPhone: "7771234567",
+  //   },
+  //   {
+  //     id: 3,
+  //     name: "Mario",
+  //     surname: "Rodríguez",
+  //     lastname: "González",
+  //     workArea: "Plataformas",
+  //     email: "mariordz@gmail.com",
+  //     phone: "7777654321",
+  //     cellPhone: "7777654321",
+  //   },
+  //   {
+  //     id: 4,
+  //     name: "Aldahir",
+  //     surname: "Gómez",
+  //     lastname: "García",
+  //     workArea: "Mercadotecnia",
+  //     email: "aldahirgmz@gmail.com",
+  //     phone: "7774242077",
+  //     cellPhone: "7774242077",
+  //   },
+  // ];
 
   const deleteEmp = () => {
-    let btn = window.confirm("¿Seguro que deseas eliminar?")
+    let btn = window.confirm("¿Seguro que deseas eliminar?");
     if (!btn) {
       swal({
         title: "Se canceló la eliminación",
@@ -130,41 +114,41 @@ const Tables = () => {
       });
       setEmpleado(false);
     }
-  }
+  };
 
-  const listItems = empleados.map((infoM) => (
-    <tr>
-      <th>{infoM.id}</th>
-      <th>{infoM.name}</th>
-      <th>
-        {infoM.surname}
-        {""}
-        {infoM.lastname}
-      </th>
-      <th>{infoM.workArea}</th>
-      <th>{infoM.email}</th>
-      <th>{infoM.phone}</th>
-      <th>{infoM.cellPhone}</th>
-      <th>
-        <Button
-          className="btn btn-outline"
-          style={{ borderRadius: "100%", color:"#fcba03"}}
-          onClick={toggle2}
-        >
-          <IoIosClipboard style={{ fontSize: "25" }} />
-        </Button>
-      </th>
-      <th>
-        <Button
-          className="btn btn-outline"
-          style={{ borderRadius: "100%", color:"#db0c09" }}
-          onClick={deleteEmp}
-        >
-          <IoIosTrash style={{ fontSize: "25" }} />
-        </Button>
-      </th>
-    </tr>
-  ));
+  // const listItems = empleados.map((infoM) => (
+  //   <tr>
+  //     <th>{infoM.id}</th>
+  //     <th>{infoM.name}</th>
+  //     <th>
+  //       {infoM.surname}
+  //       {""}
+  //       {infoM.lastname}
+  //     </th>
+  //     <th>{infoM.workArea}</th>
+  //     <th>{infoM.email}</th>
+  //     <th>{infoM.phone}</th>
+  //     <th>{infoM.cellPhone}</th>
+  //     <th>
+  //       <Button
+  //         className="btn btn-outline"
+  //         style={{ borderRadius: "100%", color: "#fcba03" }}
+  //         onClick={toggle2}
+  //       >
+  //         <IoIosClipboard style={{ fontSize: "25" }} />
+  //       </Button>
+  //     </th>
+  //     <th>
+  //       <Button
+  //         className="btn btn-outline"
+  //         style={{ borderRadius: "100%", color: "#db0c09" }}
+  //         onClick={deleteEmp}
+  //       >
+  //         <IoIosTrash style={{ fontSize: "25" }} />
+  //       </Button>
+  //     </th>
+  //   </tr>
+  // ));
 
   const validarCampos = () => {
     const inName = document.getElementById("inName").value;
@@ -179,10 +163,22 @@ const Tables = () => {
     const idAreaW = document.getElementById("idAreaW").value;
     const idDepa = document.getElementById("idDepa").value;
     if (
-      inName == "" || inName == null || inApellidoP == "" || inApellidoP == null ||
-      inEmail == "" || inEmail == null || inPass == "" || inPass == null ||
-      inPhone == "" || inPhone == null || inCellPhone == "" || inCellPhone == null ||
-      inMonitor == "" || inMonitor == null || inRespons == "" || inRespons == null
+      inName == "" ||
+      inName == null ||
+      inApellidoP == "" ||
+      inApellidoP == null ||
+      inEmail == "" ||
+      inEmail == null ||
+      inPass == "" ||
+      inPass == null ||
+      inPhone == "" ||
+      inPhone == null ||
+      inCellPhone == "" ||
+      inCellPhone == null ||
+      inMonitor == "" ||
+      inMonitor == null ||
+      inRespons == "" ||
+      inRespons == null
     ) {
       swal({
         title: "Faltan Campos por llenar",
@@ -247,34 +243,159 @@ const Tables = () => {
 
   // const [shown, setShown] = React.useState(false);
   // const switchShown = () => setShown(!shown);
+  const [data, setData] = React.useState([]);
+  const [formData, setFormData] = React.useState(defaultFormValues());
+  const [isVisible, setIsVisible] = React.useState(false);
+
+  const getEmpleado = async () => {
+    try {
+      const response = await fetch("http://localhost:8080/api/usuarios/", {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+      });
+
+      const json = await response.json();
+      setData(json.user);
+      //console.log(json.user);
+    } catch (e) {
+      //console.log("error mostrado -> " + e);
+    }
+  };
+
+  useEffect(() => {
+    getEmpleado();
+    //console.log("Arreglo Obtenido " + data);
+  }, []);
+
+  const listado = data.map((infoM) => (
+    <tr>
+      <th>{infoM.Person.name}</th>
+      <th>
+        {infoM.Person.lastname} {infoM.Person.surname}
+      </th>
+      <th>{infoM.email}</th>
+      <th>{infoM.Person.phone}</th>
+      <th>{infoM.Person.cellphone}</th>
+      <th className="text-center">
+        {infoM.Work_Schedule.hourStart} {infoM.Work_Schedule.hourEnd}
+      </th>
+      <th className="text-center">
+        {infoM.Work_Schedule.hourStartSaturday}{" "}
+        {infoM.Work_Schedule.hourEndSaturday}
+      </th>
+      <th>
+        <BtnModificar id={infoM.Person.id} />
+      </th>
+      <th>
+        <BtnEliminar id={infoM.Person.id} />
+      </th>
+    </tr>
+  ));
+
+  const handleRoute = () => {
+    history.push("/admin/empleados");
+  };
+
+  const createEmployee = async () => {
+    try {
+      await fetch("http://localhost:8080/api/usuarios/", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: formData.name,
+          lastname: formData.lastname,
+          surname: formData.surname,
+          phone: formData.phone,
+          cellphone: formData.cellphone,
+          email: formData.email,
+          password: formData.password,
+          roleId: 2
+        }),
+      }).then(() => {
+        setIsVisible(false);
+        //history.push("/admin/empleados");
+        // window.location.reload()
+        swal({
+          title: "Registro Exitoso",
+          icon: "success",
+          button: "Aceptar",
+        });
+      });
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  function defaultFormValues() {
+    return {
+      id: 6,
+      name: "",
+      lastname: "",
+      surname: "",
+      phone: "",
+      cellphone: "",
+      email: "",
+      password: "",
+      roleId: "2"
+    };
+  }
+
+  const dataCath = (event, type) => {
+    setFormData({ ...formData, [type]: event });
+    console.log({ formData });
+  };
+
+  const onSubmit = () => {
+    console.log(formData);
+    if (
+      (formData.name) &&
+      (formData.lastname) &&
+      (formData.surname) &&
+      (formData.phone) &&
+      (formData.cellphone) &&
+      (formData.email) &&
+      (formData.password)
+    ) {
+      setIsVisible(true);
+      createEmployee();
+    } else {
+      console.log("Te Faltan Campos por llenar");
+      swal({
+        title: "Faltan campos por llenar",
+        icon: "warning",
+        button: "Aceptar",
+      });
+    }
+  };
 
   return (
     <>
-      {console.log(empleados)}
       <Header />
       <Container className="mt--7" fluid style={{ marginTop: "20%" }}>
         <Row>
           <div className="col">
             <Card className="shadow">
-                <CardHeader className="border-0">
+              <CardHeader className="border-0">
                 <h3 className="mb-0">Empleados</h3>
               </CardHeader>
               <Table className="align-items-center table-flush" responsive>
                 <thead className="thead-light">
                   <tr>
-                    <th scope="col">#</th>
                     <th scope="col">Nombre(s)</th>
                     <th scope="col">Apellido(s)</th>
-                    <th scope="col">Área de trabajo</th>
                     <th scope="col">Correo Electrónico</th>
                     <th scope="col">Teléfono</th>
                     <th scope="col">Teléfono Celular</th>
+                    <th scope="col">Horario Entrada y Salida</th>
+                    <th scope="col">Horario Entrada y Salida Sábado</th>
                     <th scope="col">Modificar</th>
                     <th scope="col">Eliminar</th>
                   </tr>
                 </thead>
-                <tbody>{listItems}</tbody>
+                {/* <tbody>{listItems}</tbody> */}
+                <tbody>{listado}</tbody>
               </Table>
+
               <CardFooter className="py-4">
                 <Button
                   className="button btn-success"
@@ -1134,7 +1255,7 @@ const Tables = () => {
           </div>
         </Row> */}
       </Container>
-
+      
       {/* Modal Registro */}
       <Modal isOpen={modal} toggle={toggle} size="lg">
         <ModalHeader toggle={toggle} style={{ backgroundColor: "#8ADFE2" }}>
@@ -1149,64 +1270,45 @@ const Tables = () => {
                     <label className="form-control-label">Nombre(s):</label>
                     <Input
                       className="form-control-alternative descripcion"
-                      id="inName"
+                      //id="inName"
                       placeholder="Nombre"
                       type="text"
-                      required="required"
-                    />
-                  </FormGroup>
-                </Col>
-                <Col lg="4">
-                  <FormGroup>
-                    <label className="form-control-label">Apellido Paterno:</label>
-                    <Input
-                      className="form-control-alternative descripcion"
-                      id="inApellidoP"
-                      placeholder="Apellido Paterno"
-                      type="text"
-                      required="required"
-                    />
-                  </FormGroup>
-                </Col>
-                <Col lg="4">
-                  <FormGroup>
-                    <label className="form-control-label">Apellido Materno:</label>
-                    <Input
-                      className="form-control-alternative descripcion"
-                      id="inApellidoM"
-                      placeholder="Apellido Materno"
-                      type="text"
-                      required="required"
+                      onChange={(event) =>
+                        dataCath(event.target.value, "name")
+                      }
                     />
                   </FormGroup>
                 </Col>
                 <Col lg="4">
                   <FormGroup>
                     <label className="form-control-label">
-                      Correo Electrónico:
+                      Apellido Paterno:
                     </label>
                     <Input
                       className="form-control-alternative descripcion"
-                      id="inEmail"
-                      placeholder="Email"
-                      type="email"
-                      required="required"
+                      //id="inApellidoP"
+                      placeholder="Apellido Paterno"
+                      type="text"
+                      onChange={(event) =>
+                        dataCath(event.target.value, "lastname")
+                      }
                     />
                   </FormGroup>
                 </Col>
                 <Col lg="4">
                   <FormGroup>
-                    <label className="form-control-label">Contraseña:</label>
+                    <label className="form-control-label">
+                      Apellido Materno:
+                    </label>
                     <Input
                       className="form-control-alternative descripcion"
-                      id="inPass"
-                      placeholder="Contraseña"
-                      type="password"
-                      required="required"
-                    ></Input>
-                    {/* <button onClick={switchShown}>
-                    {shown ? 'Ocultar' : 'Mostrar'}
-                  </button> */}
+                      //id="inApellidoM"
+                      placeholder="Apellido Materno"
+                      type="text"
+                      onChange={(event) =>
+                        dataCath(event.target.value, "surname")
+                      }
+                    />
                   </FormGroup>
                 </Col>
                 <Col lg="4">
@@ -1214,10 +1316,12 @@ const Tables = () => {
                     <label className="form-control-label">Teléfono:</label>
                     <Input
                       className="form-control-alternative descripcion"
-                      id="inPhone"
+                      //id="inPhone"
                       placeholder="Teléfono"
                       type="text"
-                      required="required"
+                      onChange={(event) =>
+                        dataCath(event.target.value, "phone")
+                      }
                     />
                   </FormGroup>
                 </Col>
@@ -1228,14 +1332,46 @@ const Tables = () => {
                     </label>
                     <Input
                       className="form-control-alternative descripcion"
-                      id="inCellPhone"
+                      //id="inCellPhone"
                       placeholder="Celular"
                       type="text"
-                      //required="required"
+                      onChange={(event) =>
+                        dataCath(event.target.value, "cellphone")
+                      }
                     />
                   </FormGroup>
                 </Col>
                 <Col lg="4">
+                  <FormGroup>
+                    <label className="form-control-label">
+                      Correo Electrónico:
+                    </label>
+                    <Input
+                      className="form-control-alternative descripcion"
+                      //id="inEmail"
+                      placeholder="Email"
+                      type="email"
+                      onChange={(event) =>
+                        dataCath(event.target.value, "email")
+                      }
+                    />
+                  </FormGroup>
+                </Col>
+                <Col lg="4">
+                  <FormGroup>
+                    <label className="form-control-label">Contraseña:</label>
+                    <Input
+                      className="form-control-alternative descripcion"
+                      //id="inPass"
+                      placeholder="Contraseña"
+                      type="password"
+                      onChange={(event) =>
+                        dataCath(event.target.value, "password")
+                      }
+                    ></Input>
+                  </FormGroup>
+                </Col>
+                {/* <Col lg="4">
                   <FormGroup>
                     <label className="form-control-label">Responsable:</label>
                     <Input
@@ -1259,19 +1395,11 @@ const Tables = () => {
                     />
                   </FormGroup>
                 </Col>
-                
                 <Col lg="4">
                   <FormGroup>
                     <label className="form-control-label">
                       Área de trabajo:
                     </label>
-                    {/* <Input
-                    className="form-control-alternative descripcion"
-                    id="input-description"
-                    placeholder="descripción"
-                    type="select"
-                    required="required"
-                  /> */}
                     <select id="idAreaW">
                       <option>Plataformas</option>
                       <option>Diseño</option>
@@ -1283,9 +1411,7 @@ const Tables = () => {
                 </Col>
                 <Col lg="4">
                   <FormGroup>
-                    <label className="form-control-label">
-                      Departamento:
-                    </label>
+                    <label className="form-control-label">Departamento:</label>
                     <select id="idDepa">
                       <option>Marketing</option>
                       <option>Recursos Humanos</option>
@@ -1294,7 +1420,7 @@ const Tables = () => {
                       <option>Mercadotecnia</option>
                     </select>
                   </FormGroup>
-                </Col>
+                </Col> */}
               </Row>
             </div>
             <Button
@@ -1306,7 +1432,7 @@ const Tables = () => {
               Cerrar
             </Button>
             <Button
-              onClick={validarCampos}
+              onClick={() => onSubmit()}
               // onClick={() => alertInfo()}
               className="btn btn-success"
               style={{ float: "right" }}

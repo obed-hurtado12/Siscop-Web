@@ -30,7 +30,7 @@ import {
 import Header from "components/Headers/Header.js";
 import swal from "sweetalert";
 import Carrusel from "components/Carusell/Carrusel";
-import React from "react";
+import React, { useEffect } from "react";
 import { IoIosClipboard, IoIosTrash } from "react-icons/io";
 import {
   DatePicker,
@@ -40,6 +40,8 @@ import {
 import DateFnsUtils from "@date-io/date-fns";
 import esLocale from "date-fns/locale/es";
 import BotonesAcciones from "./Fases/BotonesAcciones";
+import BtnModificar from "views/Tools/BtnModificar";
+import BtnEliminar from "views/Tools/BtnEliminar";
 
 const TableProjects = () => {
   //ACTIVAR MODALS
@@ -69,7 +71,7 @@ const TableProjects = () => {
   const [respon, setRespon] = React.useState("Luis Trujillo");
   const [proyName, setProyName] = React.useState("SISCOP");
 
-  const [data, setData] = React.useState("");
+  const [data, setData] = React.useState([]);
   const dato = "SAAP";
   const [proyecto, setProyecto] = React.useState(true);
 
@@ -174,52 +176,52 @@ const TableProjects = () => {
     },
   ];
 
-  const listItems = proyectos.map((infoM) => (
-    <tr>
-      <th>{infoM.id}</th>
-      <th>{infoM.nameResp}</th>
-      <th>
-        {infoM.projectName} {infoM.lastname}
-      </th>
-      <th>{infoM.fechaInicio}</th>
-      <th>{infoM.fechaFinal}</th>
-      <th>
-        {infoM.participantes.p1}
-        <br />
-        {infoM.participantes.p2}
-        <br />
-        {infoM.participantes.p3}
-      </th>
-      <th>
-        <Button
-          className="btn btn-outline-success"
-          style={{ borderRadius: "100%" }}
-          onClick={toggle5}
-        >
-          {/* <IoIosClipboard style={{ fontSize: "25" }} /> */}
-          <strong>Gestión de Fases</strong>
-        </Button>
-      </th>
-      <th>
-        <Button
-          className="btn btn-outline"
-          style={{ borderRadius: "100%", color: "#fcba03" }}
-          onClick={toggle2}
-        >
-          <IoIosClipboard style={{ fontSize: "25" }} />
-        </Button>
-      </th>
-      <th>
-        <Button
-          className="btn btn-outline"
-          style={{ borderRadius: "100%", color: "#db0c09" }}
-          onClick={deleteEmp}
-        >
-          <IoIosTrash style={{ fontSize: "25" }} />
-        </Button>
-      </th>
-    </tr>
-  ));
+  // const listItems = proyectos.map((infoM) => (
+  //   <tr>
+  //     <th>{infoM.id}</th>
+  //     <th>{infoM.nameResp}</th>
+  //     <th>
+  //       {infoM.projectName} {infoM.lastname}
+  //     </th>
+  //     <th>{infoM.fechaInicio}</th>
+  //     <th>{infoM.fechaFinal}</th>
+  //     <th>
+  //       {infoM.participantes.p1}
+  //       <br />
+  //       {infoM.participantes.p2}
+  //       <br />
+  //       {infoM.participantes.p3}
+  //     </th>
+  //     <th>
+  //       <Button
+  //         className="btn btn-outline-success"
+  //         style={{ borderRadius: "100%" }}
+  //         onClick={toggle5}
+  //       >
+  //         {/* <IoIosClipboard style={{ fontSize: "25" }} /> */}
+  //         <strong>Gestión de Fases</strong>
+  //       </Button>
+  //     </th>
+  //     <th>
+  //       <Button
+  //         className="btn btn-outline"
+  //         style={{ borderRadius: "100%", color: "#fcba03" }}
+  //         onClick={toggle2}
+  //       >
+  //         <IoIosClipboard style={{ fontSize: "25" }} />
+  //       </Button>
+  //     </th>
+  //     <th>
+  //       <Button
+  //         className="btn btn-outline"
+  //         style={{ borderRadius: "100%", color: "#db0c09" }}
+  //         onClick={deleteEmp}
+  //       >
+  //         <IoIosTrash style={{ fontSize: "25" }} />
+  //       </Button>
+  //     </th>
+  //   </tr>
+  // ));
 
   const alertInfo = () => {
     swal({
@@ -306,9 +308,75 @@ const TableProjects = () => {
     }
   };
 
+  // CONSUMO DE API
+  // const getProyects = async () => {
+  //   try {
+  //     const response = await fetch("http://localhost:8080/api/proyectos/", {
+  //       method: "GET",
+  //       headers: { "Content-Type": "application/json" },
+  //     });
+
+  //     const json = await response.json();
+  //     setData(json.proyects);
+  //     console.log(json.proyects);
+  //   } catch (e) {
+  //     console.log("error mostrado -> " + e);
+  //   }
+  // };
+
+  // useEffect(() => {
+  //   getProyects();
+  //   console.log("Arreglo Obtenido " + data);
+  // }, []);
+
+  // const listItems = data.map((infoM) => (
+  //   <tr>
+  //     <th>{infoM.Person.name}</th>
+  //     <th>
+  //       {infoM.Person.lastname} {infoM.Person.surname}
+  //     </th>
+  //     <th>{infoM.email}</th>
+  //     <th>{infoM.Person.phone}</th>
+  //     <th>{infoM.Person.cellphone}</th>
+  //     <th className="text-center">
+  //       {infoM.Work_Schedule.hourStart} {infoM.Work_Schedule.hourEnd}
+  //     </th>
+  //     <th className="text-center">
+  //       {infoM.Work_Schedule.hourStartSaturday}{" "}
+  //       {infoM.Work_Schedule.hourEndSaturday}
+  //     </th>
+      
+  //   </tr>
+  // ));
+
+  // const listado = data.map((infoM) => (
+  //   <tr>
+  //     <th>{infoM.Users.name}</th>
+  //     <th>
+  //       {infoM.Person.lastname} {infoM.Person.surname}
+  //     </th>
+  //     <th>{infoM.email}</th>
+  //     <th>{infoM.Person.phone}</th>
+  //     <th>{infoM.Person.cellphone}</th>
+  //     <th className="text-center">
+  //       {infoM.Work_Schedule.hourStart} {infoM.Work_Schedule.hourEnd}
+  //     </th>
+  //     <th className="text-center">
+  //       {infoM.Work_Schedule.hourStartSaturday}{" "}
+  //       {infoM.Work_Schedule.hourEndSaturday}
+  //     </th>
+  //     <th>
+  //       <BtnModificar />
+  //       {/* id={infoM.Person.id}  */}
+  //     </th>
+  //     <th>
+  //       <BtnEliminar  />
+  //       {/* id={infoM.Person.id} */}
+  //     </th>
+  //   </tr>
+  // ));
   return (
     <>
-      {console.log(proyectos)}
       <Header />
       <Container className="mt--7" fluid style={{ marginTop: "20%" }}>
         <Row>
@@ -331,7 +399,7 @@ const TableProjects = () => {
                     <th scope="col" />
                   </tr>
                 </thead>
-                <tbody>{listItems}</tbody>
+                {/* <tbody>{listItems}</tbody> */}
               </Table>
               <CardFooter className="py-4">
                 <Button
@@ -790,6 +858,7 @@ const TableProjects = () => {
           </Card>
         </ModalBody>
       </Modal>
+
     </>
   );
 };
