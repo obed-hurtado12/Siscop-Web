@@ -256,9 +256,9 @@ const TablesEmployee = () => {
 
       const json = await response.json();
       setData(json.user);
-      //console.log(json.user);
+      console.log(json.user);
     } catch (e) {
-      //console.log("error mostrado -> " + e);
+      console.log("error mostrado -> " + e);
     }
   };
 

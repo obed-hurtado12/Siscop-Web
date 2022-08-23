@@ -29,13 +29,6 @@ var routes = [
     component: TableProjects,
     layout: "/admin",
   },
-  // {
-  //   path: "/user-profile",
-  //   name: "Mi Perfil",
-  //   icon: "ni ni-single-02 text-yellow",
-  //   component: Profile,
-  //   layout: "/admin",
-  // },
   {
     path: "/login",
     name: "Cerrar Sesión",
@@ -44,11 +37,11 @@ var routes = [
     layout: "/auth",
   },
   // {
-  //   path: "/register",
-  //   name: "Register",
-  //   icon: "ni ni-circle-08 text-pink",
-  //   component: Register,
-  //   layout: "/auth",
+  //   path: "/actividades",
+  //   name: "Actividades Empleado",
+  //   icon: "ni ni-circle-08 text-ed",
+  //   component: Actividades,
+  //   layout: "/empleado",
   // },
   // {
   //   path: "/index",
