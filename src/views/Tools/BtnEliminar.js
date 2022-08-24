@@ -18,26 +18,26 @@ const BtnEliminar = ({ id }) => {
   const [modal, setModal] = React.useState(false);
   const toggle = () => setModal(!modal);
 
-  const getEmpleado = async () => {
-    try {
-      const response = await fetch("http://localhost:8080/api/usuarios/" + id, {
-        method: "GET",
-        headers: { "Content-Type": "application/json" },
-      });
+  // const getEmpleado = async () => {
+  //   try {
+  //     const response = await fetch("http://localhost:8080/api/usuarios/" + id, {
+  //       method: "GET",
+  //       headers: { "Content-Type": "application/json" },
+  //     });
 
-      const json = await response.json();
-      setData(json);
-      console.log("HOLA PAPU: ");
-      console.log(json);
-    } catch (e) {
-      console.log("error mostrado -> " + e);
-    }
-  };
+  //     const json = await response.json();
+  //     setData(json);
+  //     console.log("HOLA PAPU: ");
+  //     console.log(json);
+  //   } catch (e) {
+  //     console.log("error mostrado -> " + e);
+  //   }
+  // };
 
-  useEffect(() => {
-    getEmpleado();
-    console.log("Arreglo Obtenido: " + data);
-  }, []);
+  // useEffect(() => {
+  //   getEmpleado();
+  //   console.log("Arreglo Obtenido: " + data);
+  // }, []);
 
 
   // const deleteEmp = async () => {

@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
-import { IoIosClipboard } from "react-icons/io";
-import { useHistory } from "react-router-dom";
+import { IoIosClipboard, IoIosTrash } from "react-icons/io";
 import {
   Button,
   Col,
@@ -13,42 +12,58 @@ import {
   Row,
 } from "reactstrap";
 
-const BtnModificar = ({ id }) => {
-  
+const BtnEliminar = ({ id }) => {
   const [data, setData] = React.useState([]);
+
   const [modal, setModal] = React.useState(false);
   const toggle = () => setModal(!modal);
-  
 
-  const getEmpleado = async () => {
-    try {
-      const response = await fetch("http://localhost:8080/api/usuarios/" + id, {
-        method: "GET",
-        headers: { "Content-Type": "application/json" },
-      });
+  // const getEmpleado = async () => {
+  //   try {
+  //     const response = await fetch("http://localhost:8080/api/usuarios/" + id, {
+  //       method: "GET",
+  //       headers: { "Content-Type": "application/json" },
+  //     });
 
-      const json = await response.json();
-      setData(json);
-      console.log("HOLA PAPU: ");
-      console.log(json);
-    } catch (e) {
-      console.log("error mostrado -> " + e);
-    }
-  };
+  //     const json = await response.json();
+  //     setData(json);
+  //     console.log("HOLA PAPU: ");
+  //     console.log(json);
+  //   } catch (e) {
+  //     console.log("error mostrado -> " + e);
+  //   }
+  // };
 
-  useEffect(() => {
-    getEmpleado();
-    console.log("Arreglo Obtenido: " + data);
-  }, []);
+  // useEffect(() => {
+  //   getEmpleado();
+  //   console.log("Arreglo Obtenido: " + data);
+  // }, []);
+
+
+  // const deleteEmp = async () => {
+  //   try {
+  //     const response = await fetch("http://localhost:8080/api/usuarios/" + id, {
+  //       method: "GET",
+  //       headers: { "Content-Type": "application/json" },
+  //     });
+
+  //     const json = await response.json();
+  //     setData(json);
+  //     console.log("HOLA PAPU: ");
+  //     console.log(json);
+  //   } catch (e) {
+  //     console.log("error mostrado -> " + e);
+  //   }
+  // };
 
   return (
     <>
       <Button
         className="btn btn-outline"
-        style={{ borderRadius: "100%", color: "#fcba03" }}
-        onClick={toggle}
+        style={{ borderRadius: "100%", color: "#db0c09" }}
+        // onClick={deleteEmp}
       >
-        <IoIosClipboard style={{ fontSize: "25" }} />
+        <IoIosTrash style={{ fontSize: "25" }} />
       </Button>
 
       {console.log("Hola tienes el ID: " + id)}
@@ -237,4 +252,4 @@ const BtnModificar = ({ id }) => {
   );
 };
 
-export default BtnModificar;
+export default BtnEliminar;

@@ -71,8 +71,6 @@ const TableProjects = () => {
   const [respon, setRespon] = React.useState("Luis Trujillo");
   const [proyName, setProyName] = React.useState("SISCOP");
 
-  const [data, setData] = React.useState([]);
-  const dato = "SAAP";
   const [proyecto, setProyecto] = React.useState(true);
 
   const [newDepa, setNewDepa] = React.useState("");
@@ -253,7 +251,7 @@ const TableProjects = () => {
         icon: "success",
         button: "Aceptar",
       });
-      setData(dato);
+      // setData(dato);
     }
   };
 
@@ -309,6 +307,7 @@ const TableProjects = () => {
   };
 
   // CONSUMO DE API
+
   // const getProyects = async () => {
   //   try {
   //     const response = await fetch("http://localhost:8080/api/proyectos/", {
@@ -345,7 +344,7 @@ const TableProjects = () => {
   //       {infoM.Work_Schedule.hourStartSaturday}{" "}
   //       {infoM.Work_Schedule.hourEndSaturday}
   //     </th>
-      
+
   //   </tr>
   // ));
 
@@ -375,6 +374,99 @@ const TableProjects = () => {
   //     </th>
   //   </tr>
   // ));
+
+  //ÁREAS DE TRABAJO
+  const [dataArea, setDataArea] = React.useState([]);
+  const [formDataArea, setFormDataArea] = React.useState(defaultFormValues2());
+
+  
+  const createArea = async () => {
+    try {
+      await fetch("http://localhost:8080/api/areas-trabajo/", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: formDataArea.name,
+          description: formDataArea.description,
+        }),
+      }).then(() => {
+        //history.push("/admin/empleados");
+        swal({
+          title: "Registro Exitoso",
+          icon: "success",
+          button: "Aceptar",
+        });
+        window.location.reload();
+      });
+    } catch (e) {
+      // console.log("Error mostrado: " + e);
+    }
+  };
+
+  const createDepa = async () => {
+    try {
+      await fetch("http://localhost:8080/api/departamentos/", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: formDataArea.name,
+          description: formDataArea.description,
+        }),
+      }).then(() => {
+        //history.push("/admin/empleados");
+        swal({
+          title: "Registro Exitoso",
+          icon: "success",
+          button: "Aceptar",
+        });
+        window.location.reload();
+      });
+    } catch (e) {
+      // console.log("Error mostrado: " + e);
+    }
+  };
+
+  function defaultFormValues2() {
+    return {
+      name: "",
+      description: "",
+    };
+  }
+
+  const dataCath = (event, type) => {
+    setFormDataArea({ ...formDataArea, [type]: event });
+    // console.log({ formDataArea });
+  };
+
+  const onSubmit = () => {
+    // console.log(formDataArea);
+    if (formDataArea.name && formDataArea.description) {
+      createArea();
+    } else {
+      // console.log("Te Faltan Campos por llenar");
+      swal({
+        title: "Faltan campos por llenar",
+        icon: "warning",
+        button: "Aceptar",
+      });
+    }
+  };
+
+  const onSubmit2 = () => {
+    // console.log(formDataArea);
+    if (formDataArea.name && formDataArea.description) {
+      createDepa();
+    } else {
+      // console.log("Te Faltan Campos por llenar");
+      swal({
+        title: "Faltan campos por llenar",
+        icon: "warning",
+        button: "Aceptar",
+      });
+    }
+  };
+
+
   return (
     <>
       <Header />
@@ -716,7 +808,7 @@ const TableProjects = () => {
       {/* Modal Registrar Departamento*/}
       <Modal isOpen={modal3} toggle={toggle3} size="lg">
         <ModalHeader toggle={toggle3} style={{ backgroundColor: "#8ADFE2" }}>
-          <h3 className="mb-0">Registro de Departamento</h3>
+          <h3 className="mb-0">Registro de Departamentos</h3>
         </ModalHeader>
         <ModalBody>
           <Card className="shadow">
@@ -730,26 +822,32 @@ const TableProjects = () => {
                       </label>
                       <Input
                         className="form-control-alternative descripcion"
-                        id="inDepa"
+                        // id="inArea"
                         //value={respon}
                         type="text"
                         required="required"
-                        placeholder="Departamento"
+                        placeholder="Nombre"
+                        onChange={(event) =>
+                          dataCath(event.target.value, "name")
+                        }
                       />
                     </FormGroup>
                   </Col>
                   <Col lg="12">
                     <FormGroup>
                       <label className="form-control-label">
-                        Descripción del Departamento:
+                        Descripción:
                       </label>
                       <Input
                         className="form-control-alternative descripcion"
-                        id="inDepaDesc"
+                        //id="inAreaDesc"
                         //value={respon}
                         type="text"
                         required="required"
                         placeholder="Descripción"
+                        onChange={(event) =>
+                          dataCath(event.target.value, "description")
+                        }
                       />
                     </FormGroup>
                   </Col>
@@ -764,7 +862,7 @@ const TableProjects = () => {
                 Cerrar
               </Button>
               <Button
-                onClick={validarRegistroDepa}
+                onClick={() => onSubmit2()}
                 className="btn btn-success"
                 style={{ float: "right" }}
               >
@@ -792,11 +890,14 @@ const TableProjects = () => {
                       </label>
                       <Input
                         className="form-control-alternative descripcion"
-                        id="inArea"
+                        // id="inArea"
                         //value={respon}
                         type="text"
                         required="required"
                         placeholder="Area"
+                        onChange={(event) =>
+                          dataCath(event.target.value, "name")
+                        }
                       />
                     </FormGroup>
                   </Col>
@@ -807,11 +908,14 @@ const TableProjects = () => {
                       </label>
                       <Input
                         className="form-control-alternative descripcion"
-                        id="inAreaDesc"
+                        //id="inAreaDesc"
                         //value={respon}
                         type="text"
                         required="required"
                         placeholder="Descripción"
+                        onChange={(event) =>
+                          dataCath(event.target.value, "description")
+                        }
                       />
                     </FormGroup>
                   </Col>
@@ -826,7 +930,7 @@ const TableProjects = () => {
                 Cerrar
               </Button>
               <Button
-                onClick={validarRegistroArea}
+                onClick={() => onSubmit()}
                 className="btn btn-success"
                 style={{ float: "right" }}
               >
@@ -837,28 +941,29 @@ const TableProjects = () => {
         </ModalBody>
       </Modal>
 
-      {/* Modal Registrar Área de Trabajo*/}
+      {/*FASES*/}
       <Modal isOpen={modal5} toggle={toggle5} size="lg">
         <ModalHeader toggle={toggle5} style={{ backgroundColor: "#8ADFE2" }}>
           <h3 className="mb-0">Fases</h3>
         </ModalHeader>
         <ModalBody>
           <Card className="shadow">
-          <div className="pl-lg-4"><BotonesAcciones/></div>
-          <br/>
-              <Button
-                // type="submit"
-                className="btn btn-outline-danger"
-                onClick={toggle5}
-                style={{ maxWidth:"100px", marginLeft:"80%"}}
-              >
-                Cerrar
-              </Button>
-            <br/>
+            <div className="pl-lg-4">
+              <BotonesAcciones />
+            </div>
+            <br />
+            <Button
+              // type="submit"
+              className="btn btn-outline-danger"
+              onClick={toggle5}
+              style={{ maxWidth: "100px", marginLeft: "80%" }}
+            >
+              Cerrar
+            </Button>
+            <br />
           </Card>
         </ModalBody>
       </Modal>
-
     </>
   );
 };

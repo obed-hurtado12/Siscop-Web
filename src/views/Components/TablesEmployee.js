@@ -1,4 +1,3 @@
-
 import {
   Badge,
   Card,
@@ -31,241 +30,101 @@ import {
 import Header from "components/Headers/Header.js";
 import swal from "sweetalert";
 import Carrusel from "components/Carusell/Carrusel";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { IoIosClipboard, IoIosTrash } from "react-icons/io";
 import BtnModificar from "views/Tools/BtnModificar";
 import BtnEliminar from "views/Tools/BtnEliminar";
 import { useHistory } from "react-router-dom";
+import {
+  DatePicker,
+  MuiPickersUtilsProvider,
+  TimePicker,
+} from "@material-ui/pickers";
+import DateFnsUtils from "@date-io/date-fns";
+import esLocale from "date-fns/locale/es";
+import Select from "react-select";
 
 const TablesEmployee = () => {
   const history = useHistory();
-  const [mId, setMId] = React.useState(6);
-  const [mName, setMName] = React.useState("");
-  const [mSurname, setMSurname] = React.useState("");
-  const [mLastName, setMLastName] = React.useState("");
-  const [mPhone, setMPhone] = React.useState("");
-  const [mCellPhone, setMCellPhone] = React.useState("");
-  const [mEmail, setMEmail] = React.useState("");
-  const [mPass, setMPass] = React.useState("");
-  const [mRol, setMRol] = React.useState(2);
 
-  const [empleado, setEmpleado] = React.useState(true);
   const [modal, setModal] = React.useState(false);
   const toggle = () => setModal(!modal);
   const [modal2, setModal2] = React.useState(false);
   const toggle2 = () => setModal2(!modal2);
-
-  const empleados = [
-    {
-      id: 1,
-      name: "Obed Ariel",
-      surname: "Hurtado",
-      lastname: "Hernández",
-      workArea: "Sistemas",
-      email: "oahh12345678@gmail.com",
-      phone: "7773851862",
-      cellPhone: "7771305580",
-    },
-    {
-      id: 2,
-      name: "Noé",
-      surname: "Martínez",
-      lastname: "Flores",
-      workArea: "Servidores",
-      email: "noemtz@gmail.com",
-      phone: "7771234567",
-      cellPhone: "7771234567",
-    },
-    {
-      id: 3,
-      name: "Mario",
-      surname: "Rodríguez",
-      lastname: "González",
-      workArea: "Plataformas",
-      email: "mariordz@gmail.com",
-      phone: "7777654321",
-      cellPhone: "7777654321",
-    },
-    {
-      id: 4,
-      name: "Aldahir",
-      surname: "Gómez",
-      lastname: "García",
-      workArea: "Mercadotecnia",
-      email: "aldahirgmz@gmail.com",
-      phone: "7774242077",
-      cellPhone: "7774242077",
-    },
-  ];
-
-  const deleteEmp = () => {
-    let btn = window.confirm("¿Seguro que deseas eliminar?");
-    if (!btn) {
-      swal({
-        title: "Se canceló la eliminación",
-        icon: "warning",
-        button: "Aceptar",
-      });
-    } else {
-      swal({
-        title: "Se eliminó el empleado",
-        icon: "success",
-        button: "Aceptar",
-      });
-      setEmpleado(false);
-    }
-  };
-
-  const listItems = empleados.map((infoM) => (
-    <tr>
-      <th>{infoM.id}</th>
-      <th>{infoM.name}</th>
-      <th>
-        {infoM.surname}
-        {""}
-        {infoM.lastname}
-      </th>
-      <th>{infoM.workArea}</th>
-      <th>{infoM.email}</th>
-      <th>{infoM.phone}</th>
-      <th>{infoM.cellPhone}</th>
-      <th>
-        <Button
-          className="btn btn-outline"
-          style={{ borderRadius: "100%", color: "#fcba03" }}
-          onClick={toggle2}
-        >
-          <IoIosClipboard style={{ fontSize: "25" }} />
-        </Button>
-      </th>
-      <th>
-        <Button
-          className="btn btn-outline"
-          style={{ borderRadius: "100%", color: "#db0c09" }}
-          onClick={deleteEmp}
-        >
-          <IoIosTrash style={{ fontSize: "25" }} />
-        </Button>
-      </th>
-    </tr>
-  ));
-
-  const validarCampos = () => {
-    const inName = document.getElementById("inName").value;
-    const inApellidoP = document.getElementById("inApellidoP").value;
-    const inApellidoM = document.getElementById("inApellidoM").value;
-    const inEmail = document.getElementById("inEmail").value;
-    const inPass = document.getElementById("inPass").value;
-    const inPhone = document.getElementById("inPhone").value;
-    const inCellPhone = document.getElementById("inCellPhone").value;
-    const inMonitor = document.getElementById("inMonitor").value;
-    const inRespons = document.getElementById("inRespons").value;
-    const idAreaW = document.getElementById("idAreaW").value;
-    const idDepa = document.getElementById("idDepa").value;
-    if (
-      inName == "" ||
-      inName == null ||
-      inApellidoP == "" ||
-      inApellidoP == null ||
-      inEmail == "" ||
-      inEmail == null ||
-      inPass == "" ||
-      inPass == null ||
-      inPhone == "" ||
-      inPhone == null ||
-      inCellPhone == "" ||
-      inCellPhone == null ||
-      inMonitor == "" ||
-      inMonitor == null ||
-      inRespons == "" ||
-      inRespons == null
-    ) {
-      swal({
-        title: "Faltan Campos por llenar",
-        icon: "warning",
-        button: "Aceptar",
-      });
-    } else {
-      swal({
-        title: "Registro Exitoso",
-        icon: "success",
-        button: "Aceptar",
-      });
-    }
-  };
-
-  const validarCamposModificar = () => {
-    const inName = document.getElementById("inNameM").value;
-    const inApellidoP = document.getElementById("inApeP").value;
-    const inApellidoM = document.getElementById("inApeM").value;
-    const inEmail = document.getElementById("inEmailM").value;
-    const inPass = document.getElementById("inPassM").value;
-    const inPhone = document.getElementById("inPhoneM").value;
-    const inCellPhone = document.getElementById("inCellPhoneM").value;
-    const inMonitor = document.getElementById("inMonitorM").value;
-    const inRespons = document.getElementById("inResponsM").value;
-    const idAreaW = document.getElementById("idAreaWM").value;
-    const idDepa = document.getElementById("idDepaM").value;
-
-    if (
-      inName == "" ||
-      inName == null ||
-      inApellidoP == "" ||
-      inApellidoP == null ||
-      inApellidoM == "" ||
-      inApellidoM == null ||
-      inEmail == "" ||
-      inEmail == null ||
-      inPass == "" ||
-      inPass == null ||
-      inPhone == "" ||
-      inPhone == null ||
-      inCellPhone == "" ||
-      inCellPhone == null ||
-      inMonitor == "" ||
-      inMonitor == null ||
-      inRespons == "" ||
-      inRespons == null
-    ) {
-      swal({
-        title: "Error al modificar",
-        icon: "warning",
-        button: "Aceptar",
-      });
-    } else {
-      swal({
-        title: "Modificación Exitosa",
-        icon: "success",
-        button: "Aceptar",
-      });
-    }
-  };
-
-  // const [shown, setShown] = React.useState(false);
-  // const switchShown = () => setShown(!shown);
+  
   const [data, setData] = React.useState([]);
   const [formData, setFormData] = React.useState(defaultFormValues());
   const [isVisible, setIsVisible] = React.useState(false);
+  const [fechaSeleccionada, setFechaSeleccionada] = React.useState(new Date());
+  var fecha = new Date();
 
-  const getEmpleado = async () => {
+  const [dataHour, setDataHour] = React.useState([]);
+  const [data2, setData2] = React.useState([]);
+  const [defaultName, setDefaultName] = useState("")
+  const [defaultLastname, setDefaultLastname] = useState("")
+  const [defaultSurname, setDefaultSurname] = useState("")
+  const [defaultPhone, setDefaultPhone] = useState("")
+  const [defaultCellPhone, setDefaultCellPhone] = useState("")
+  const [defaultEmail, setDefaultEmail] = useState("")
+
+  const getHorarios = async () => {
+    try {
+      const response = await fetch(
+        "http://localhost:8080/api/horarios-trabajo/",
+        {
+          method: "GET",
+          headers: { "Content-Type": "application/json" },
+        }
+      );
+      const json = await response.json();
+      setDataHour(json.workSchedules);
+      // console.log("HORARIOS:")
+      // console.log(json.workSchedules);
+    } catch (e) {
+      // console.log("error mostrado -> " + e);
+    }
+  };
+  const getEmpleados = async () => {
     try {
       const response = await fetch("http://localhost:8080/api/usuarios/", {
         method: "GET",
-        headers: { "Content-Type": "application/json" }
+        headers: { "Content-Type": "application/json" },
       });
 
       const json = await response.json();
       setData(json.user);
-      console.log(json.user);
+      //console.log(json.user);
     } catch (e) {
-      console.log("error mostrado -> " + e);
+      //console.log("error mostrado -> " + e);
     }
   };
-
   useEffect(() => {
+    getEmpleados();
     getEmpleado();
-    console.log("Arreglo Obtenido " + data);
+    getHorarios();
+    // console.log("Arreglo Obtenido " + data);
   }, []);
+
+  const getEmpleado = async (id) => {
+    try {
+      const response = await fetch("http://localhost:8080/api/usuarios/" + id, {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+      });
+      const json = await response.json();
+      setData2(json);
+      setDefaultName(json.Person.name)
+      setDefaultLastname(json.Person.lastname)
+      setDefaultSurname(json.Person.surname)
+      setDefaultPhone(json.Person.phone)
+      setDefaultCellPhone(json.Person.cellphone)
+      setDefaultEmail(json.email)
+      console.log("BIENVENIDO PARSERO")
+      console.log(json);
+    } catch (e) {
+      //console.log("error mostrado -> " + e);
+    }
+  };
 
   const listado = data.map((infoM) => (
     <tr>
@@ -284,17 +143,20 @@ const TablesEmployee = () => {
         {infoM.Work_Schedule.hourEndSaturday} */}
       </th>
       <th>
-        <BtnModificar id={infoM.Person.id} />
+      <Button
+        className="btn btn-outline"
+        style={{ borderRadius: "100%", color: "#e09b1b" }}
+        // onClick={deleteEmp}
+        onClick={() => (toggle2(), getEmpleado(infoM.Person.id))}
+      >
+        <IoIosClipboard style={{ fontSize: "25" }} />
+      </Button>
       </th>
       <th>
         <BtnEliminar id={infoM.Person.id} />
       </th>
     </tr>
   ));
-
-  const handleRoute = () => {
-    history.push("/admin/empleados");
-  };
 
   const createEmployee = async () => {
     try {
@@ -309,7 +171,7 @@ const TablesEmployee = () => {
           cellphone: formData.cellphone,
           email: formData.email,
           password: formData.password,
-          roleId: 2
+          roleId: 2,
         }),
       }).then(() => {
         setIsVisible(false);
@@ -320,6 +182,7 @@ const TablesEmployee = () => {
           icon: "success",
           button: "Aceptar",
         });
+        window.location.reload();
       });
     } catch (e) {
       // console.log(e);
@@ -336,25 +199,25 @@ const TablesEmployee = () => {
       cellphone: "",
       email: "",
       password: "",
-      roleId: "2"
+      roleId: "2",
     };
   }
 
   const dataCath = (event, type) => {
     setFormData({ ...formData, [type]: event });
-    console.log({ formData });
+    //console.log({ formData });
   };
 
   const onSubmit = () => {
-    console.log(formData);
+    //console.log(formData);
     if (
-      (formData.name) &&
-      (formData.lastname) &&
-      (formData.surname) &&
-      (formData.phone) &&
-      (formData.cellphone) &&
-      (formData.email) &&
-      (formData.password)
+      formData.name &&
+      formData.lastname &&
+      formData.surname &&
+      formData.phone &&
+      formData.cellphone &&
+      formData.email &&
+      formData.password
     ) {
       setIsVisible(true);
       createEmployee();
@@ -408,7 +271,7 @@ const TablesEmployee = () => {
           </div>
         </Row>
       </Container>
-      
+
       {/* Modal Registro */}
       <Modal isOpen={modal} toggle={toggle} size="lg">
         <ModalHeader toggle={toggle} style={{ backgroundColor: "#8ADFE2" }}>
@@ -426,9 +289,7 @@ const TablesEmployee = () => {
                       //id="inName"
                       placeholder="Nombre"
                       type="text"
-                      onChange={(event) =>
-                        dataCath(event.target.value, "name")
-                      }
+                      onChange={(event) => dataCath(event.target.value, "name")}
                     />
                   </FormGroup>
                 </Col>
@@ -524,56 +385,34 @@ const TablesEmployee = () => {
                     ></Input>
                   </FormGroup>
                 </Col>
-                {/* <Col lg="4">
+                {/* <Col lg="4" style={{ marginTop: "-25px" }}>
+                  <br />
                   <FormGroup>
-                    <label className="form-control-label">Responsable:</label>
-                    <Input
-                      className="form-control-alternative descripcion"
-                      id="inRespons"
-                      placeholder="Responsable"
-                      type="text"
-                      required="required"
-                    />
-                  </FormGroup>
-                </Col>
-                <Col lg="4">
-                  <FormGroup>
-                    <label className="form-control-label">Monitor:</label>
-                    <Input
-                      className="form-control-alternative descripcion"
-                      id="inMonitor"
-                      placeholder="Monitor"
-                      type="text"
-                      required="required"
-                    />
-                  </FormGroup>
-                </Col>
-                <Col lg="4">
-                  <FormGroup>
-                    <label className="form-control-label">
-                      Área de trabajo:
-                    </label>
-                    <select id="idAreaW">
-                      <option>Plataformas</option>
-                      <option>Diseño</option>
-                      <option>Servidores</option>
-                      <option>Sistemas</option>
-                      <option>Mercadotecnia</option>
-                    </select>
-                  </FormGroup>
-                </Col>
-                <Col lg="4">
-                  <FormGroup>
-                    <label className="form-control-label">Departamento:</label>
-                    <select id="idDepa">
-                      <option>Marketing</option>
-                      <option>Recursos Humanos</option>
-                      <option>Comercial</option>
-                      <option>Sistemas</option>
-                      <option>Mercadotecnia</option>
-                    </select>
+                    <label className="form-control-label">Horario:</label>
+                    <Select>
+
+                    </Select>
+                    
                   </FormGroup>
                 </Col> */}
+                {/* INPUT HORAS */}
+
+                {/* <Col lg="6">
+                  <FormGroup>
+                    <MuiPickersUtilsProvider
+                      utils={DateFnsUtils}
+                      locale={esLocale}
+                    >
+                      <label className="form-control-label">Hora:</label>
+                      <br />
+                      <TimePicker
+                        onChange={setFechaSeleccionada}
+                        required="required"
+                      />
+                    </MuiPickersUtilsProvider>
+                  </FormGroup>
+                </Col> */}
+                {/* {console.log(dataHour[0])} */}
               </Row>
             </div>
             <Button
@@ -600,9 +439,10 @@ const TablesEmployee = () => {
       {/* Modal Modificar */}
       <Modal isOpen={modal2} toggle={toggle2} size="lg">
         <ModalHeader toggle={toggle2} style={{ backgroundColor: "#8ADFE2" }}>
-          <h3 className="mb-0">Modificar Empleado</h3>
+          <h3 className="mb-0">Modificar al empleado: {defaultName}</h3>
         </ModalHeader>
         <ModalBody>
+      
           <Form>
             <div className="pl-lg-4">
               <Row>
@@ -611,10 +451,11 @@ const TablesEmployee = () => {
                     <label className="form-control-label">Nombre(s):</label>
                     <Input
                       className="form-control-alternative descripcion"
-                      id="inNameM"
+                      //id="inName"
+                      placeholder="Nombre"
                       type="text"
-                      required="required"
-                      value={mName}
+                      value={defaultName}
+                      // onChange={(event) => dataCath(event.target.value, "name")}
                     />
                   </FormGroup>
                 </Col>
@@ -625,10 +466,13 @@ const TablesEmployee = () => {
                     </label>
                     <Input
                       className="form-control-alternative descripcion"
-                      id="inApeP"
-                      value={mSurname}
+                      //id="inApellidoP"
+                      placeholder="Apellido Paterno"
                       type="text"
-                      required="required"
+                      // onChange={(event) =>
+                      //   dataCath(event.target.value, "lastname")
+                      // }
+                      value={defaultLastname}
                     />
                   </FormGroup>
                 </Col>
@@ -639,36 +483,13 @@ const TablesEmployee = () => {
                     </label>
                     <Input
                       className="form-control-alternative descripcion"
-                      id="inApeM"
-                      value={mLastName}
+                      //id="inApellidoM"
+                      placeholder="Apellido Materno"
+                      value={defaultSurname}
                       type="text"
-                      required="required"
-                    />
-                  </FormGroup>
-                </Col>
-                <Col lg="4">
-                  <FormGroup>
-                    <label className="form-control-label">
-                      Correo Electrónico:
-                    </label>
-                    <Input
-                      className="form-control-alternative descripcion"
-                      id="inEmailM"
-                      value={mEmail}
-                      type="email"
-                      required="required"
-                    />
-                  </FormGroup>
-                </Col>
-                <Col lg="4">
-                  <FormGroup>
-                    <label className="form-control-label">Contraseña:</label>
-                    <Input
-                      className="form-control-alternative descripcion"
-                      id="inPassM"
-                      type="password"
-                      value={"obed123"}
-                      required="required"
+                      // onChange={(event) =>
+                      //   dataCath(event.target.value, "surname")
+                      // }
                     />
                   </FormGroup>
                 </Col>
@@ -677,10 +498,13 @@ const TablesEmployee = () => {
                     <label className="form-control-label">Teléfono:</label>
                     <Input
                       className="form-control-alternative descripcion"
-                      id="inPhoneM"
-                      value={mPhone}
+                      //id="inPhone"
+                      placeholder="Teléfono"
+                      value={defaultPhone}
                       type="text"
-                      required="required"
+                      // onChange={(event) =>
+                      //   dataCath(event.target.value, "phone")
+                      // }
                     />
                   </FormGroup>
                 </Col>
@@ -691,70 +515,48 @@ const TablesEmployee = () => {
                     </label>
                     <Input
                       className="form-control-alternative descripcion"
-                      id="inCellPhoneM"
-                      value={mCellPhone}
+                      //id="inCellPhone"
+                      placeholder="Celular"
+                      value={defaultCellPhone}
                       type="text"
-                      required="required"
-                    />
-                  </FormGroup>
-                </Col>
-                <Col lg="4">
-                  <FormGroup>
-                    <label className="form-control-label">Responsable:</label>
-                    <Input
-                      className="form-control-alternative descripcion"
-                      id="inResponsM"
-                      placeholder="Responsable"
-                      type="text"
-                      required="required"
-                    />
-                  </FormGroup>
-                </Col>
-                <Col lg="4">
-                  <FormGroup>
-                    <label className="form-control-label">Monitor:</label>
-                    <Input
-                      className="form-control-alternative descripcion"
-                      id="inMonitorM"
-                      placeholder="Monitor"
-                      type="text"
-                      required="required"
+                      // onChange={(event) =>
+                      //   dataCath(event.target.value, "cellphone")
+                      // }
                     />
                   </FormGroup>
                 </Col>
                 <Col lg="4">
                   <FormGroup>
                     <label className="form-control-label">
-                      Área de trabajo:
+                      Correo Electrónico:
                     </label>
-                    {/* <Input
-                    className="form-control-alternative descripcion"
-                    id="input-description"
-                    placeholder="descripción"
-                    type="select"
-                    required="required"
-                  /> */}
-                    <select id="idAreaWM">
-                      <option>Plataformas</option>
-                      <option>Diseño</option>
-                      <option>Servidores</option>
-                      <option>Sistemas</option>
-                      <option>Mercadotecnia</option>
-                    </select>
+                    <Input
+                      className="form-control-alternative descripcion"
+                      //id="inEmail"
+                      placeholder="Email"
+                      type="email"
+                      value={defaultEmail}
+                      // onChange={(event) =>
+                      //   dataCath(event.target.value, "email")
+                      // }
+                    />
                   </FormGroup>
                 </Col>
-                <Col lg="4">
+                {/* <Col lg="4">
                   <FormGroup>
-                    <label className="form-control-label">Departamentos:</label>
-                    <select id="idDepaM">
-                      <option>Marketing</option>
-                      <option>Recursos Humanos</option>
-                      <option>Comercial</option>
-                      <option>Sistemas</option>
-                      <option>Mercadotecnia</option>
-                    </select>
+                    <label className="form-control-label">Contraseña:</label>
+                    <Input
+                      className="form-control-alternative descripcion"
+                      //id="inPass"
+                      placeholder="Contraseña"
+                      type="password"
+                      onChange={(event) =>
+                        dataCath(event.target.value, "password")
+                      }
+                    ></Input>
                   </FormGroup>
                 </Col>
+                */}
               </Row>
             </div>
             <Button
@@ -766,12 +568,11 @@ const TablesEmployee = () => {
               Cerrar
             </Button>
             <Button
-              onClick={validarCamposModificar}
-              // onClick={() => alertInfo()}
+              onClick={() => onSubmit()}
               className="btn btn-success"
               style={{ float: "right" }}
             >
-              Modificar
+              Registrar
             </Button>
             <br />
             <br />
