@@ -30,7 +30,7 @@ import {
 import Header from "components/Headers/Header.js";
 import swal from "sweetalert";
 import Carrusel from "components/Carusell/Carrusel";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { IoIosClipboard, IoIosTrash } from "react-icons/io";
 import {
   DatePicker,
@@ -45,134 +45,118 @@ import BtnEliminar from "views/Tools/BtnEliminar";
 
 const TableProjects = () => {
   //ACTIVAR MODALS
+
   const [modal, setModal] = React.useState(false);
   const toggle = () => setModal(!modal);
-
   const [modal2, setModal2] = React.useState(false);
   const toggle2 = () => setModal2(!modal2);
-
   const [modal3, setModal3] = React.useState(false);
   const toggle3 = () => setModal3(!modal3);
-
   const [modal4, setModal4] = React.useState(false);
   const toggle4 = () => setModal4(!modal4);
-
   const [modal5, setModal5] = React.useState(false);
   const toggle5 = () => setModal5(!modal5);
-
-  //INPUTS FECHA
-  const [fechaSeleccionada, setFechaSeleccionada] = React.useState(new Date());
-  const [fechaSeleccionada2, setFechaSeleccionada2] = React.useState(
-    new Date()
-  );
-  var fecha = new Date();
-  var fecha2 = new Date();
-
-  const [respon, setRespon] = React.useState("Luis Trujillo");
-  const [proyName, setProyName] = React.useState("SISCOP");
-
-  const [proyecto, setProyecto] = React.useState(true);
 
   const [newDepa, setNewDepa] = React.useState("");
   const [newDescDepa, setNewDescDepa] = React.useState("");
   const [newAreaT, setNewAreaT] = React.useState("");
   const [newDescAreaT, setNewDescAreaT] = React.useState("");
 
-  const deleteEmp = () => {
-    let btn = window.confirm("¿Seguro que deseas eliminar?");
-    if (!btn) {
-      swal({
-        title: "Se canceló la eliminación",
-        icon: "warning",
-        button: "Aceptar",
-      });
-    } else {
-      swal({
-        title: "Se eliminó el proyecto",
-        icon: "success",
-        button: "Aceptar",
-      });
-      setProyecto(false);
-    }
-  };
-  const proyectos = [
-    {
-      id: 1,
-      nameResp: "Luis Trujillo",
-      projectName: "SISCOP",
-      fechaInicio: "10/08/2022",
-      fechaFinal: "19/08/2022",
-      participantes: {
-        p1: "Mario Rodríguez",
-        p2: "Obed Hurtado",
-        p3: "Noé Martínez",
-        p4: "Aldahir Gómez García",
-      },
-      fases: {
-        f1: "Inicio",
-        f2: "En progreso",
-        f3: "Terminada",
-        f4: "Finalizada",
-      },
-    },
-    {
-      id: 2,
-      nameResp: "Kenia Reyes",
-      projectName: "SAAP",
-      fechaInicio: "10/08/2022",
-      fechaFinal: "19/08/2022",
-      participantes: {
-        p1: "Mario Rodríguez",
-        p2: "Obed Hurtado",
-        p3: "Noé Martínez",
-        p4: "Aldahir Gómez García",
-      },
-      fases: {
-        f1: "Inicio",
-        f2: "En progreso",
-        f3: "Terminada",
-        f4: "Finalizada",
-      },
-    },
-    {
-      id: 3,
-      nameResp: "Jeraldhy Bonilla",
-      projectName: "Diseño de Blogs",
-      fechaInicio: "10/08/2022",
-      fechaFinal: "19/08/2022",
-      participantes: {
-        p1: "Mario Rodríguez",
-        p2: "Obed Hurtado",
-        p3: "Noé Martínez",
-        p4: "Aldahir Gómez García",
-      },
-      fases: {
-        f1: "Inicio",
-        f2: "En progreso",
-        f3: "Terminada",
-        f4: "Finalizada",
-      },
-    },
-    {
-      id: 4,
-      nameResp: "Juan Benitez",
-      projectName: "Mapas Fractales",
-      fechaInicio: "10/08/2022",
-      fechaFinal: "19/08/2022",
-      participantes: {
-        p1: "Mario Rodríguez",
-        p2: "Obed Hurtado",
-        p3: "Noé Martínez",
-        p4: "Aldahir Gómez García",
-      },
-      fases: {
-        f1: "Inicio",
-        f2: "En progreso",
-        f3: "Terminada",
-        f4: "Finalizada",
-      },
-    },
-  ];
+  // const deleteEmp = () => {
+  //   let btn = window.confirm("¿Seguro que deseas eliminar?");
+  //   if (!btn) {
+  //     swal({
+  //       title: "Se canceló la eliminación",
+  //       icon: "warning",
+  //       button: "Aceptar",
+  //     });
+  //   } else {
+  //     swal({
+  //       title: "Se eliminó el proyecto",
+  //       icon: "success",
+  //       button: "Aceptar",
+  //     });
+  //     setProyecto(false);
+  //   }
+  // };
+  // const proyectos = [
+  //   {
+  //     id: 1,
+  //     nameResp: "Luis Trujillo",
+  //     projectName: "SISCOP",
+  //     fechaInicio: "10/08/2022",
+  //     fechaFinal: "19/08/2022",
+  //     participantes: {
+  //       p1: "Mario Rodríguez",
+  //       p2: "Obed Hurtado",
+  //       p3: "Noé Martínez",
+  //       p4: "Aldahir Gómez García",
+  //     },
+  //     fases: {
+  //       f1: "Inicio",
+  //       f2: "En progreso",
+  //       f3: "Terminada",
+  //       f4: "Finalizada",
+  //     },
+  //   },
+  //   {
+  //     id: 2,
+  //     nameResp: "Kenia Reyes",
+  //     projectName: "SAAP",
+  //     fechaInicio: "10/08/2022",
+  //     fechaFinal: "19/08/2022",
+  //     participantes: {
+  //       p1: "Mario Rodríguez",
+  //       p2: "Obed Hurtado",
+  //       p3: "Noé Martínez",
+  //       p4: "Aldahir Gómez García",
+  //     },
+  //     fases: {
+  //       f1: "Inicio",
+  //       f2: "En progreso",
+  //       f3: "Terminada",
+  //       f4: "Finalizada",
+  //     },
+  //   },
+  //   {
+  //     id: 3,
+  //     nameResp: "Jeraldhy Bonilla",
+  //     projectName: "Diseño de Blogs",
+  //     fechaInicio: "10/08/2022",
+  //     fechaFinal: "19/08/2022",
+  //     participantes: {
+  //       p1: "Mario Rodríguez",
+  //       p2: "Obed Hurtado",
+  //       p3: "Noé Martínez",
+  //       p4: "Aldahir Gómez García",
+  //     },
+  //     fases: {
+  //       f1: "Inicio",
+  //       f2: "En progreso",
+  //       f3: "Terminada",
+  //       f4: "Finalizada",
+  //     },
+  //   },
+  //   {
+  //     id: 4,
+  //     nameResp: "Juan Benitez",
+  //     projectName: "Mapas Fractales",
+  //     fechaInicio: "10/08/2022",
+  //     fechaFinal: "19/08/2022",
+  //     participantes: {
+  //       p1: "Mario Rodríguez",
+  //       p2: "Obed Hurtado",
+  //       p3: "Noé Martínez",
+  //       p4: "Aldahir Gómez García",
+  //     },
+  //     fases: {
+  //       f1: "Inicio",
+  //       f2: "En progreso",
+  //       f3: "Terminada",
+  //       f4: "Finalizada",
+  //     },
+  //   },
+  // ];
 
   // const listItems = proyectos.map((infoM) => (
   //   <tr>
@@ -221,165 +205,119 @@ const TableProjects = () => {
   //   </tr>
   // ));
 
-  const alertInfo = () => {
-    swal({
-      title: "Registro Exitoso",
-      icon: "success",
-      button: "Aceptar",
-      //buttons: ["No", "Si"],
-    });
-  };
+  // const alertInfo = () => {
+  //   swal({
+  //     title: "Registro Exitoso",
+  //     icon: "success",
+  //     button: "Aceptar",
+  //     //buttons: ["No", "Si"],
+  //   });
+  // };
 
-  const validarCamposModificar = () => {
-    const inRespName = document.getElementById("inRespName").value;
-    const inProName = document.getElementById("inProName").value;
+  // const validarCamposModificar = () => {
+  //   const inRespName = document.getElementById("inRespName").value;
+  //   const inProName = document.getElementById("inProName").value;
 
-    if (
-      inRespName == "" ||
-      inRespName == null ||
-      inProName == "" ||
-      inProName == null
-    ) {
-      swal({
-        title: "Error al modificar",
-        icon: "warning",
-        button: "Aceptar",
-      });
-    } else {
-      swal({
-        title: "Modificación Exitosa",
-        icon: "success",
-        button: "Aceptar",
-      });
-      // setData(dato);
-    }
-  };
-
-  const validarRegistroDepa = () => {
-    const ininDepa = document.getElementById("inDepa").value;
-    const inDepaDesc = document.getElementById("inDepaDesc").value;
-    if (
-      ininDepa == "" ||
-      ininDepa == null ||
-      inDepaDesc == "" ||
-      inDepaDesc == null
-    ) {
-      swal({
-        title: "Error al registrar",
-        icon: "warning",
-        button: "Aceptar",
-      });
-    } else {
-      swal({
-        title: "Registro Exitoso",
-        icon: "success",
-        button: "Aceptar",
-      });
-      setNewDepa(ininDepa);
-      setNewDescDepa(inDepaDesc);
-    }
-  };
-
-  const validarRegistroArea = () => {
-    const inArea = document.getElementById("inArea").value;
-    const inAreaDesc = document.getElementById("inAreaDesc").value;
-
-    if (
-      inArea == "" ||
-      inArea == null ||
-      inAreaDesc == "" ||
-      inAreaDesc == null
-    ) {
-      swal({
-        title: "Error al registrar",
-        icon: "warning",
-        button: "Aceptar",
-      });
-    } else {
-      swal({
-        title: "Registro Exitoso",
-        icon: "success",
-        button: "Aceptar",
-      });
-      setNewAreaT(inArea);
-      setNewDescAreaT(inAreaDesc);
-    }
-  };
-
-  // CONSUMO DE API
-
-  // const getProyects = async () => {
-  //   try {
-  //     const response = await fetch("http://localhost:8080/api/proyectos/", {
-  //       method: "GET",
-  //       headers: { "Content-Type": "application/json" },
+  //   if (
+  //     inRespName == "" ||
+  //     inRespName == null ||
+  //     inProName == "" ||
+  //     inProName == null
+  //   ) {
+  //     swal({
+  //       title: "Error al modificar",
+  //       icon: "warning",
+  //       button: "Aceptar",
   //     });
-
-  //     const json = await response.json();
-  //     setData(json.proyects);
-  //     console.log(json.proyects);
-  //   } catch (e) {
-  //     console.log("error mostrado -> " + e);
+  //   } else {
+  //     swal({
+  //       title: "Modificación Exitosa",
+  //       icon: "success",
+  //       button: "Aceptar",
+  //     });
+  //     // setData(dato);
   //   }
   // };
 
-  // useEffect(() => {
-  //   getProyects();
-  //   console.log("Arreglo Obtenido " + data);
-  // }, []);
+  // const validarRegistroDepa = () => {
+  //   const ininDepa = document.getElementById("inDepa").value;
+  //   const inDepaDesc = document.getElementById("inDepaDesc").value;
+  //   if (
+  //     ininDepa == "" ||
+  //     ininDepa == null ||
+  //     inDepaDesc == "" ||
+  //     inDepaDesc == null
+  //   ) {
+  //     swal({
+  //       title: "Error al registrar",
+  //       icon: "warning",
+  //       button: "Aceptar",
+  //     });
+  //   } else {
+  //     swal({
+  //       title: "Registro Exitoso",
+  //       icon: "success",
+  //       button: "Aceptar",
+  //     });
+  //     setNewDepa(ininDepa);
+  //     setNewDescDepa(inDepaDesc);
+  //   }
+  // };
 
-  // const listItems = data.map((infoM) => (
-  //   <tr>
-  //     <th>{infoM.Person.name}</th>
-  //     <th>
-  //       {infoM.Person.lastname} {infoM.Person.surname}
-  //     </th>
-  //     <th>{infoM.email}</th>
-  //     <th>{infoM.Person.phone}</th>
-  //     <th>{infoM.Person.cellphone}</th>
-  //     <th className="text-center">
-  //       {infoM.Work_Schedule.hourStart} {infoM.Work_Schedule.hourEnd}
-  //     </th>
-  //     <th className="text-center">
-  //       {infoM.Work_Schedule.hourStartSaturday}{" "}
-  //       {infoM.Work_Schedule.hourEndSaturday}
-  //     </th>
+  // const validarRegistroArea = () => {
+  //   const inArea = document.getElementById("inArea").value;
+  //   const inAreaDesc = document.getElementById("inAreaDesc").value;
 
-  //   </tr>
-  // ));
+  //   if (
+  //     inArea == "" ||
+  //     inArea == null ||
+  //     inAreaDesc == "" ||
+  //     inAreaDesc == null
+  //   ) {
+  //     swal({
+  //       title: "Error al registrar",
+  //       icon: "warning",
+  //       button: "Aceptar",
+  //     });
+  //   } else {
+  //     swal({
+  //       title: "Registro Exitoso",
+  //       icon: "success",
+  //       button: "Aceptar",
+  //     });
+  //     setNewAreaT(inArea);
+  //     setNewDescAreaT(inAreaDesc);
+  //   }
+  // };
 
-  // const listado = data.map((infoM) => (
-  //   <tr>
-  //     <th>{infoM.Users.name}</th>
-  //     <th>
-  //       {infoM.Person.lastname} {infoM.Person.surname}
-  //     </th>
-  //     <th>{infoM.email}</th>
-  //     <th>{infoM.Person.phone}</th>
-  //     <th>{infoM.Person.cellphone}</th>
-  //     <th className="text-center">
-  //       {infoM.Work_Schedule.hourStart} {infoM.Work_Schedule.hourEnd}
-  //     </th>
-  //     <th className="text-center">
-  //       {infoM.Work_Schedule.hourStartSaturday}{" "}
-  //       {infoM.Work_Schedule.hourEndSaturday}
-  //     </th>
-  //     <th>
-  //       <BtnModificar />
-  //       {/* id={infoM.Person.id}  */}
-  //     </th>
-  //     <th>
-  //       <BtnEliminar  />
-  //       {/* id={infoM.Person.id} */}
-  //     </th>
-  //   </tr>
-  // ));
+  // CONSUMO DE API
+
+  // STATE para Almacenado del Array de Proyectos
+  const [dataProyects, setDataProyects] = useState([]);
+
+  const getProyects = async () => {
+    try {
+      const response = await fetch("http://localhost:8080/api/proyectos/", {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+      });
+      const json = await response.json();
+      setDataProyects(json.proyects);
+      console.log("PROYECTOS");
+      console.log(json.proyects);
+    } catch (e) {
+      console.log("error mostrado -> " + e);
+    }
+  };
 
   //ÁREAS DE TRABAJO
   const [dataArea, setDataArea] = React.useState([]);
   const [formDataArea, setFormDataArea] = React.useState(defaultFormValues2());
+  const [dataArea2, setdataArea2] = React.useState([]);
+  const [dataDepa2, setDataDepa2] = React.useState([]);
+  const [dataParticipantesID, setDataParticipantesID] = useState([]);
+  const [dataEmpleados, setdataEmpleados] = useState([])
 
-  
   const createArea = async () => {
     try {
       await fetch("http://localhost:8080/api/areas-trabajo/", {
@@ -426,6 +364,46 @@ const TableProjects = () => {
     }
   };
 
+  const getAreas = async () => {
+    try {
+      const response = await fetch("http://localhost:8080/api/areas-trabajo/", {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+      });
+
+      const json = await response.json();
+      setdataArea2(json.workAreas);
+      // console.log("AREAS DE TRABAJO");
+      // console.log(json.workAreas);
+    } catch (e) {
+      //console.log("error mostrado -> " + e);
+    }
+  };
+
+  const getDepas = async () => {
+    try {
+      const response = await fetch("http://localhost:8080/api/departamentos/", {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+      });
+
+      const json = await response.json();
+      setDataDepa2(json.departaments);
+      // console.log("DEPARTAMENTOS:");
+      // console.log(json.departaments);
+    } catch (e) {
+      //console.log("error mostrado -> " + e);
+    }
+  };
+
+  useEffect(() => {
+    getAreas();
+    getDepas();
+    getProyects();
+    getParticipantes();
+    // console.log("Arreglo Obtenido " + data);
+  }, []);
+
   function defaultFormValues2() {
     return {
       name: "",
@@ -466,6 +444,26 @@ const TableProjects = () => {
     }
   };
 
+  ///////////////////////////////////
+
+  const getParticipantes = async () => {
+    try {
+      const response = await fetch(
+        "http://localhost:8080/api/proyectos/" + 1 + "/participantes",
+        {
+          method: "GET",
+          headers: { "Content-Type": "application/json" },
+        }
+      );
+
+      const json = await response.json();
+      setDataParticipantesID(json.resp);
+      console.log("PARTICIPANTES:");
+      console.log(json.resp);
+    } catch (e) {
+      //console.log("error mostrado -> " + e);
+    }
+  };
 
   return (
     <>
@@ -480,18 +478,65 @@ const TableProjects = () => {
               <Table className="align-items-center table-flush" responsive>
                 <thead className="thead-light">
                   <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Responsable</th>
+                    {/* <th scope="col">#</th>
+                    <th scope="col">Responsable</th> */}
+                    <th scope="col">ID Proyecto</th>
                     <th scope="col">Nombre Proyecto</th>
                     <th scope="col">Fecha Inicio</th>
                     <th scope="col">Fecha Fin</th>
                     <th scope="col">Participantes</th>
                     <th scope="col">Fases</th>
-                    <th scope="col" />
-                    <th scope="col" />
+                    <th scope="col">Modificar</th>
+                    <th scope="col">Eliminar</th>
+                    {/*<th scope="col" />*/}
                   </tr>
                 </thead>
                 {/* <tbody>{listItems}</tbody> */}
+                <>
+                  {dataProyects.map((item, i) => (
+                    <tr>
+                      <th>{item.id}</th>
+                      <th>{item.name}</th>
+                      <th>{item.dateStart}</th>
+                      <th>{item.dateEnd}</th>
+                      <th className="text-center">
+                        {/* {getParticipantes(item.id)}*/}
+                        {
+                          dataParticipantesID.map((item2, i) =>(
+                            <><span class="badge badge-success">{item2.UserId} </span><br/></>
+                          ))
+                        } 
+                      </th>
+                      <th>
+                        <Button
+                          className="btn btn-outline-success"
+                          style={{ borderRadius: "100%" }}
+                          onClick={toggle5}
+                        >
+                          <strong>Gestión de Fases</strong>
+                        </Button>
+                      </th>
+                      <th>
+                        <Button
+                          className="btn btn-outline"
+                          style={{ borderRadius: "100%", color: "#fcba03" }}
+                          onClick={toggle2}
+                        >
+                          <IoIosClipboard style={{ fontSize: "25" }} />
+                        </Button>
+                      </th>
+                      <th>
+                        <Button
+                          className="btn btn-outline"
+                          style={{ borderRadius: "100%", color: "#db0c09" }}
+                          //onClick={deleteEmp}
+                        >
+                          <IoIosTrash style={{ fontSize: "25" }} />
+                        </Button>
+                      </th>
+                    </tr>
+                  ))}
+                </>
               </Table>
               <CardFooter className="py-4">
                 <Button
@@ -502,14 +547,14 @@ const TableProjects = () => {
                   Registrar Proyecto
                 </Button>
                 <Button
-                  className="button btn-info"
+                  className="button btn-success"
                   style={{ color: "black", float: "left" }}
                   onClick={toggle4}
                 >
                   Registrar Área de Trabajo
                 </Button>
                 <Button
-                  className="button btn-info"
+                  className="button btn-success"
                   style={{ color: "black", float: "left" }}
                   onClick={toggle3}
                 >
@@ -569,9 +614,9 @@ const TableProjects = () => {
                       </label>
                       <br />
                       <DatePicker
-                        value={fechaSeleccionada}
-                        onChange={setFechaSeleccionada}
-                        minDate={fecha}
+                        //value={fechaSeleccionada}
+                        // onChange={setFechaSeleccionada}
+                        // minDate={fecha}
                         required="required"
                       />
                     </MuiPickersUtilsProvider>
@@ -588,9 +633,9 @@ const TableProjects = () => {
                       </label>
                       <br />
                       <DatePicker
-                        value={fechaSeleccionada}
-                        onChange={setFechaSeleccionada}
-                        minDate={fecha}
+                        // value={fechaSeleccionada}
+                        // onChange={setFechaSeleccionada}
+                        // minDate={fecha}
                         required="required"
                       />
                     </MuiPickersUtilsProvider>
@@ -630,24 +675,6 @@ const TableProjects = () => {
                     </select>
                   </FormGroup>
                 </Col>
-
-                {/* HORAS: */}
-                {/* <Col lg="3">
-                  <FormGroup>
-                    <MuiPickersUtilsProvider
-                      utils={DateFnsUtils}
-                      locale={esLocale}
-                    >
-                      <label className="form-control-label">Hora</label>
-                      <br />
-                      <TimePicker
-                        value={fechaSeleccionada}
-                        onChange={setFechaSeleccionada}
-                        required="required"
-                      />
-                    </MuiPickersUtilsProvider>
-                  </FormGroup>
-                </Col> */}
               </Row>
             </div>
             <Button
@@ -659,7 +686,7 @@ const TableProjects = () => {
               Cerrar
             </Button>
             <Button
-              onClick={() => alertInfo()}
+              // onClick={() => alertInfo()}
               className="btn btn-success"
               style={{ float: "right" }}
             >
@@ -686,7 +713,7 @@ const TableProjects = () => {
                     <Input
                       className="form-control-alternative descripcion"
                       id="inRespName"
-                      value={respon}
+                      //value={respon}
                       type="text"
                       required="required"
                     />
@@ -700,7 +727,7 @@ const TableProjects = () => {
                     <Input
                       className="form-control-alternative descripcion"
                       id="inProName"
-                      value={proyName}
+                      //value={proyName}
                       type="text"
                       required="required"
                     />
@@ -717,9 +744,9 @@ const TableProjects = () => {
                       </label>
                       <br />
                       <DatePicker
-                        value={fechaSeleccionada}
-                        onChange={setFechaSeleccionada}
-                        minDate={fecha}
+                        // value={fechaSeleccionada}
+                        // onChange={setFechaSeleccionada}
+                        // minDate={fecha}
                         required="required"
                       />
                     </MuiPickersUtilsProvider>
@@ -736,9 +763,9 @@ const TableProjects = () => {
                       </label>
                       <br />
                       <DatePicker
-                        value={fechaSeleccionada2}
-                        onChange={setFechaSeleccionada2}
-                        minDate={fecha2}
+                        // value={fechaSeleccionada2}
+                        // onChange={setFechaSeleccionada2}
+                        // minDate={fecha2}
                         required="required"
                       />
                     </MuiPickersUtilsProvider>
@@ -795,7 +822,7 @@ const TableProjects = () => {
               Cerrar
             </Button>
             <Button
-              onClick={validarCamposModificar}
+              //onClick={validarCamposModificar}
               className="btn btn-success"
               style={{ float: "right" }}
             >
@@ -835,9 +862,7 @@ const TableProjects = () => {
                   </Col>
                   <Col lg="12">
                     <FormGroup>
-                      <label className="form-control-label">
-                        Descripción:
-                      </label>
+                      <label className="form-control-label">Descripción:</label>
                       <Input
                         className="form-control-alternative descripcion"
                         //id="inAreaDesc"

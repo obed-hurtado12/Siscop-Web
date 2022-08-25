@@ -66,7 +66,7 @@ const BtnEliminar = ({ id }) => {
         <IoIosTrash style={{ fontSize: "25" }} />
       </Button>
 
-      {console.log("Hola tienes el ID: " + id)}
+      {/* {console.log("Hola tienes el ID: " + id)} */}
       {/* {console.log("BIENVENIDO CRACK: ")}
       {console.log(data.Person.name)} */}
 
