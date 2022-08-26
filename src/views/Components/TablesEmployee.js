@@ -29,20 +29,10 @@ import {
 // core components
 import Header from "components/Headers/Header.js";
 import swal from "sweetalert";
-import Carrusel from "components/Carusell/Carrusel";
 import React, { useEffect, useState } from "react";
 import { IoIosClipboard, IoIosTrash } from "react-icons/io";
-import BtnModificar from "views/Tools/BtnModificar";
 import BtnEliminar from "views/Tools/BtnEliminar";
 import { useHistory } from "react-router-dom";
-import {
-  DatePicker,
-  MuiPickersUtilsProvider,
-  TimePicker,
-} from "@material-ui/pickers";
-import DateFnsUtils from "@date-io/date-fns";
-import esLocale from "date-fns/locale/es";
-import Select from "react-select";
 import "./style.css";
 
 const TablesEmployee = () => {
@@ -220,6 +210,7 @@ const TablesEmployee = () => {
       // console.log("error mostrado -> " + e);
     }
   };
+  
   const listado = data.map((infoM) => (
     <tr>
       <th>{infoM.Role.name}</th>
@@ -544,11 +535,12 @@ const TablesEmployee = () => {
               <CardFooter className="py-4">
                 <Button
                   className="button btn-success"
-                  style={{ color: "black", marginLeft: "80%" }}
+                  style={{ color: "black", float: "right" }}
                   onClick={toggle}
                 >
                   Registrar Empleado
                 </Button>
+                <> </>
                 <Button
                   className="button btn-success"
                   style={{ color: "black", float: "left" }}
@@ -615,7 +607,7 @@ const TablesEmployee = () => {
                     />
                   </FormGroup>
                 </Col>
-                <Col lg="4">
+                <Col lg="6">
                   <FormGroup>
                     <label className="form-control-label">Teléfono:</label>
                     <Input
@@ -629,7 +621,7 @@ const TablesEmployee = () => {
                     />
                   </FormGroup>
                 </Col>
-                <Col lg="4">
+                <Col lg="6">
                   <FormGroup>
                     <label className="form-control-label">
                       Teléfono Celular:
@@ -675,10 +667,10 @@ const TablesEmployee = () => {
                     ></Input>
                   </FormGroup>
                 </Col>
-                <Col lg="6">
+                <Col lg="4">
                   <FormGroup>
                     <label className="form-control-label">
-                      Seleccione el Rol del empleado:
+                      Seleccione el Rol:
                     </label>
                     <select onChange={handleRolRegister}>
                       <option value={-1}>Seleccione una opción:</option>
@@ -690,10 +682,10 @@ const TablesEmployee = () => {
                     </select>
                   </FormGroup>
                 </Col>
-                <Col lg="6">
+                <Col lg="4">
                   <FormGroup>
                     <label className="form-control-label">
-                      Seleccione la nueva Area de Trabajo:
+                      Seleccione el Area de Trabajo:
                     </label>
                     <select onChange={handleAreaRegister}>
                       <option value={-1}>Seleccione una opción:</option>
@@ -705,10 +697,10 @@ const TablesEmployee = () => {
                     </select>
                   </FormGroup>
                 </Col>
-                <Col lg="6">
+                <Col lg="4">
                   <FormGroup>
                     <label className="form-control-label">
-                      Seleccione el nuevo Departamento:
+                      Seleccione el Departamento:
                     </label>
                     <select onChange={handleDepaRegister}>
                       <option value={-1}>Seleccione una opción:</option>
@@ -720,7 +712,7 @@ const TablesEmployee = () => {
                     </select>
                   </FormGroup>
                 </Col>
-                <Col lg="6">
+                <Col lg="4">
                   <FormGroup>
                     <label className="form-control-label">
                       Seleccione el Horario:
@@ -783,7 +775,6 @@ const TablesEmployee = () => {
                       placeholder="Nombre"
                       type="text"
                       value={defaultName}
-                      //  onChange={(event) => dataCathModify(event.target.value, "name")}
                       onChange={(event) => setDefaultName(event.target.value)}
                     />
                   </FormGroup>
@@ -996,6 +987,7 @@ const TablesEmployee = () => {
           </Form>
         </ModalBody>
       </Modal>
+
 
       {/* Modal Registrar HORARIOS*/}
       <Modal isOpen={modal3} toggle={toggle3} size="lg">

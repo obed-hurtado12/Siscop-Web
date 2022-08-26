@@ -11,7 +11,7 @@ const Login = () => {
                 © {new Date().getFullYear()}{" "}
                 <a
                   className="font-weight-bold ml-1"
-                  href="https://conectatumarketing.net/?fbclid=IwAR2oFp_9W4s8t5wx4JnhWUCX07_kgzi8B3uia7J_a2eIEU9v-hyIi5YfhA4"
+                  href="https://www.accionti.com"                  
                   target="_blank"
                   style={{color:"white", fontSize:"110%"}}
                 >

@@ -85,12 +85,13 @@ const Sidebar = (props) => {
   }
 
   return (
-    <Navbar style={{backgroundColor:"black"}}
+
+    <Navbar style={{color:"black"}}
       className="navbar-horizontal fixed-left navbar-light bg-white"
       expand="md"
       id="sidenav-main"
     >
-      <Container fluid>
+      <Container fluid style={{backgroundColor:"#73c9be"}}>
         {/* Toggler */}
         <button
           className="navbar-toggler"
@@ -172,7 +173,7 @@ const Sidebar = (props) => {
           </UncontrolledDropdown>
         </Nav>
         {/* Collapse */}
-        <Collapse navbar isOpen={collapseOpen}>
+        <Collapse navbar isOpen={collapseOpen} >
           {/* Collapse header */}
           <div className="navbar-collapse-header d-md-none">
             <Row>
@@ -222,6 +223,7 @@ const Sidebar = (props) => {
         </Collapse>
       </Container>
     </Navbar>
+
   );
 };
 

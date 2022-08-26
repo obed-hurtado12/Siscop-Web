@@ -3,21 +3,10 @@ import {
   Card,
   CardHeader,
   CardFooter,
-  DropdownMenu,
-  DropdownItem,
-  UncontrolledDropdown,
-  DropdownToggle,
-  Media,
-  Pagination,
-  PaginationItem,
-  PaginationLink,
-  Progress,
   Table,
   Container,
   Row,
-  UncontrolledTooltip,
   Button,
-  ModalFooter,
   ModalBody,
   ModalHeader,
   Modal,
@@ -29,23 +18,13 @@ import {
 // core components
 import Header from "components/Headers/Header.js";
 import swal from "sweetalert";
-import Carrusel from "components/Carusell/Carrusel";
 import React, { useEffect, useState } from "react";
 import { IoIosClipboard, IoIosTrash } from "react-icons/io";
-import {
-  DatePicker,
-  MuiPickersUtilsProvider,
-  TimePicker,
-} from "@material-ui/pickers";
-import DateFnsUtils from "@date-io/date-fns";
-import esLocale from "date-fns/locale/es";
 import BotonesAcciones from "./Fases/BotonesAcciones";
-import BtnModificar from "views/Tools/BtnModificar";
-import BtnEliminar from "views/Tools/BtnEliminar";
 
 const TableProjects = () => {
+  const fecha = new Date();
   //ACTIVAR MODALS
-
   const [modal, setModal] = React.useState(false);
   const toggle = () => setModal(!modal);
   const [modal2, setModal2] = React.useState(false);
@@ -56,11 +35,10 @@ const TableProjects = () => {
   const toggle4 = () => setModal4(!modal4);
   const [modal5, setModal5] = React.useState(false);
   const toggle5 = () => setModal5(!modal5);
-
-  const [newDepa, setNewDepa] = React.useState("");
-  const [newDescDepa, setNewDescDepa] = React.useState("");
-  const [newAreaT, setNewAreaT] = React.useState("");
-  const [newDescAreaT, setNewDescAreaT] = React.useState("");
+  const [modal6, setModal6] = React.useState(false);
+  const toggle6 = () => setModal6(!modal6);
+  const [modal7, setModal7] = React.useState(false);
+  const toggle7 = () => setModal7(!modal7);
 
   // const deleteEmp = () => {
   //   let btn = window.confirm("¿Seguro que deseas eliminar?");
@@ -303,20 +281,36 @@ const TableProjects = () => {
       });
       const json = await response.json();
       setDataProyects(json.proyects);
-      console.log("PROYECTOS");
-      console.log(json.proyects);
+      // setDataParticipantesID(json.proyect.Users)
+      // console.log("PROYECTOS");
+      // console.log(json.proyects);
     } catch (e) {
       console.log("error mostrado -> " + e);
     }
   };
 
   //ÁREAS DE TRABAJO
-  const [dataArea, setDataArea] = React.useState([]);
   const [formDataArea, setFormDataArea] = React.useState(defaultFormValues2());
   const [dataArea2, setdataArea2] = React.useState([]);
   const [dataDepa2, setDataDepa2] = React.useState([]);
-  const [dataParticipantesID, setDataParticipantesID] = useState([]);
-  const [dataEmpleados, setdataEmpleados] = useState([])
+  const [dataEmpleados, setDataEmpleados] = useState([]);
+  const [posEmp, setPosEmp] = useState("");
+
+  const getEmpleados = async () => {
+    try {
+      const response = await fetch("http://localhost:8080/api/usuarios/", {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+      });
+
+      const json = await response.json();
+      setDataEmpleados(json.user);
+      // console.log("MUESTRA DE DATOS:");
+      // console.log(json.user);
+    } catch (e) {
+      //console.log("error mostrado -> " + e);
+    }
+  };
 
   const createArea = async () => {
     try {
@@ -400,7 +394,8 @@ const TableProjects = () => {
     getAreas();
     getDepas();
     getProyects();
-    getParticipantes();
+    getEmpleados();
+    getPhasesByProyect();
     // console.log("Arreglo Obtenido " + data);
   }, []);
 
@@ -444,26 +439,128 @@ const TableProjects = () => {
     }
   };
 
-  ///////////////////////////////////
+  //////////////////////////////////////////////
+  // REGISTRO DE PROYECTO
+  const [formProyect, setFormProyect] = React.useState(defaultFormProyect());
 
-  const getParticipantes = async () => {
+  const [emp, setEmp] = useState(1);
+  const [participante, setParticipante] = useState(1);
+  const [idProyect, setIdProyect] = useState(1);
+  const [dataFases, setDataFases] = useState([]);
+  const [disable, setDisable] = React.useState(false);
+
+  const createProyect = async () => {
     try {
-      const response = await fetch(
-        "http://localhost:8080/api/proyectos/" + 1 + "/participantes",
-        {
-          method: "GET",
-          headers: { "Content-Type": "application/json" },
-        }
-      );
-
-      const json = await response.json();
-      setDataParticipantesID(json.resp);
-      console.log("PARTICIPANTES:");
-      console.log(json.resp);
+      await fetch("http://localhost:8080/api/proyectos/", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: formProyect.name,
+          dateStart: formProyect.dateStart,
+          dateEnd: formProyect.dateEnd,
+          UserId: emp,
+        }),
+      }).then(() => {
+        swal({
+          title: "Registro del proyecto exitoso",
+          icon: "success",
+          button: "Aceptar",
+        });
+        window.location.reload();
+      });
     } catch (e) {
-      //console.log("error mostrado -> " + e);
+      console.log(e);
     }
   };
+  function defaultFormProyect() {
+    return {
+      name: "",
+      dateStart: "",
+      dateEnd: "",
+    };
+  }
+  const dataCathProyect = (event, type) => {
+    setFormProyect({ ...formProyect, [type]: event });
+  };
+  const onSubmitProyect = () => {
+    //console.log(formData);
+    if (
+      formProyect.name &&
+      formProyect.dateStart &&
+      formProyect.dateEnd
+      // &&formProyect.UserId
+    ) {
+      createProyect();
+    } else {
+      console.log("Te Faltan Campos por llenar");
+      swal({
+        title: "Faltan campos por llenar",
+        icon: "warning",
+        button: "Aceptar",
+      });
+    }
+  };
+  const handlePos = function (e) {
+    const opcion = e.target.value;
+    setEmp(dataEmpleados[opcion].id);
+    console.log("ID CAPTURADO REGISTRO: ");
+    //console.log(dataEmpleados[opcion].id);
+  };
+
+  const addUser = async () => {
+    try {
+      await fetch(
+        "http://localhost:8080/api/proyectos/" +
+          idProyect +
+          "/agregar-usuarios",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            UserId: participante,
+          }),
+        }
+      ).then(() => {
+        swal({
+          title: "Se agregó al participante",
+          icon: "success",
+          button: "Aceptar",
+        });
+        window.location.reload();
+      });
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  const handlePos2 = function (e) {
+    const opcion = e.target.value;
+    setParticipante(dataEmpleados[opcion].id);
+    console.log("ID CAPTURADO REGISTRO: ");
+    console.log(dataEmpleados[opcion].id);
+  };
+
+  const onSubmitAddUser = () => {
+    //console.log(formData);
+    addUser();
+  };
+
+  const getPhasesByProyect = async (id) => {
+    try {
+      const response = await fetch("http://localhost:8080/api/proyectos/"+ id +"/fases/" , {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+      });
+      const json = await response.json();
+      setDataFases(json.phases)
+      // console.log("FASES");
+      // console.log(json.phases);
+    } catch (e) {
+      // console.log("error mostrado -> " + e);
+    }
+  };
+
+  const [data2, setData2] = useState([])
 
   return (
     <>
@@ -486,8 +583,8 @@ const TableProjects = () => {
                     <th scope="col">Fecha Fin</th>
                     <th scope="col">Participantes</th>
                     <th scope="col">Fases</th>
-                    <th scope="col">Modificar</th>
-                    <th scope="col">Eliminar</th>
+                    {/* <th scope="col">Modificar</th>
+                    <th scope="col">Eliminar</th> */}
                     {/*<th scope="col" />*/}
                   </tr>
                 </thead>
@@ -499,24 +596,39 @@ const TableProjects = () => {
                       <th>{item.name}</th>
                       <th>{item.dateStart}</th>
                       <th>{item.dateEnd}</th>
-                      <th className="text-center">
-                        {/* {getParticipantes(item.id)}*/}
-                        {
-                          dataParticipantesID.map((item2, i) =>(
-                            <><span class="badge badge-success">{item2.UserId} </span><br/></>
-                          ))
-                        } 
-                      </th>
                       <th>
+                        <Button
+                          key={"proyecto" + i}
+                          className="btn btn-outline-success"
+                          style={{ borderRadius: "100%" }}
+                          onClick={() => (
+                            toggle6(),
+                            setIdProyect(item.id)
+                          )}
+                        >
+                          <strong>Mostrar</strong>
+                        </Button>
+                        {/* {
+                        (dataProyects).map((it) => (
+                          <>
+                          <h6>{it.Users.id}</h6>
+                          <h6>{it.Users.name}</h6>
+                          </>
+                        ))
+                        } */}
+                        {/* <h6>HOLA</h6>
+                        <h6>HOLA</h6> */}
+                      </th>
+                       <th>
                         <Button
                           className="btn btn-outline-success"
                           style={{ borderRadius: "100%" }}
-                          onClick={toggle5}
+                          onClick={() => (toggle5(), getPhasesByProyect(item.id))}
                         >
                           <strong>Gestión de Fases</strong>
                         </Button>
                       </th>
-                      <th>
+                     {/* <th>
                         <Button
                           className="btn btn-outline"
                           style={{ borderRadius: "100%", color: "#fcba03" }}
@@ -524,7 +636,7 @@ const TableProjects = () => {
                         >
                           <IoIosClipboard style={{ fontSize: "25" }} />
                         </Button>
-                      </th>
+                      </th> 
                       <th>
                         <Button
                           className="btn btn-outline"
@@ -533,7 +645,7 @@ const TableProjects = () => {
                         >
                           <IoIosTrash style={{ fontSize: "25" }} />
                         </Button>
-                      </th>
+                      </th>*/}
                     </tr>
                   ))}
                 </>
@@ -578,101 +690,64 @@ const TableProjects = () => {
                 <Col lg="6">
                   <FormGroup>
                     <label className="form-control-label">
-                      Nombre del responsable:
-                    </label>
-                    <Input
-                      className="form-control-alternative descripcion"
-                      id="inRespName"
-                      placeholder="Responsable"
-                      type="text"
-                      required="required"
-                    />
-                  </FormGroup>
-                </Col>
-                <Col lg="6">
-                  <FormGroup>
-                    <label className="form-control-label">
                       Nombre del proyecto:
                     </label>
                     <Input
                       className="form-control-alternative descripcion"
-                      id="inProName"
                       placeholder="Proyecto"
                       type="text"
                       required="required"
+                      onChange={(event) =>
+                        dataCathProyect(event.target.value, "name")
+                      }
                     />
                   </FormGroup>
                 </Col>
                 <Col lg="6">
                   <FormGroup>
-                    <MuiPickersUtilsProvider
-                      utils={DateFnsUtils}
-                      locale={esLocale}
-                    >
-                      <label className="form-control-label">
-                        Fecha de Inicio
-                      </label>
-                      <br />
-                      <DatePicker
-                        //value={fechaSeleccionada}
-                        // onChange={setFechaSeleccionada}
-                        // minDate={fecha}
-                        required="required"
-                      />
-                    </MuiPickersUtilsProvider>
+                    <label className="form-control-label">
+                      Seleccione al Responsable:
+                    </label>
+                    <select onChange={handlePos}>
+                      <option value={-1}>Seleccione una opción:</option>
+                      {dataEmpleados.map((item, i) => (
+                        <option key={"empleado" + i} value={i}>
+                          {item.Person.name} {item.Person.lastname}
+                        </option>
+                      ))}
+                    </select>
                   </FormGroup>
                 </Col>
                 <Col lg="6">
                   <FormGroup>
-                    <MuiPickersUtilsProvider
-                      utils={DateFnsUtils}
-                      locale={esLocale}
-                    >
-                      <label className="form-control-label">
-                        Fecha de Finalización
-                      </label>
-                      <br />
-                      <DatePicker
-                        // value={fechaSeleccionada}
-                        // onChange={setFechaSeleccionada}
-                        // minDate={fecha}
-                        required="required"
-                      />
-                    </MuiPickersUtilsProvider>
-                  </FormGroup>
-                </Col>
-                <Col lg="4">
-                  <FormGroup>
                     <label className="form-control-label">
-                      Área de trabajo:
+                      Fecha de Inicio:
                     </label>
-                    {/* <Input
-                    className="form-control-alternative descripcion"
-                    id="input-description"
-                    placeholder="descripción"
-                    type="select"
-                    required="required"
-                  /> */}
-                    <select id="idAreaW">
-                      <option>Plataformas</option>
-                      <option>Diseño</option>
-                      <option>Servidores</option>
-                      <option>Sistemas</option>
-                      <option>Mercadotecnia</option>
-                    </select>
+                    <Input
+                      className="form-control-alternative descripcion"
+                      placeholder="Inicio"
+                      type="date"
+                      required="required"
+                      onChange={(event) =>
+                        dataCathProyect(event.target.value, "dateStart")
+                      }
+                      min={fecha}
+                    />
                   </FormGroup>
                 </Col>
-                <Col lg="4">
+                <Col lg="6">
                   <FormGroup>
-                    <label className="form-control-label">Fases:</label>
-                    <br />
-                    <select id="idFases">
-                      <option>Inicio</option>
-                      <option>Planeación</option>
-                      <option>En proceso</option>
-                      <option>Terminado</option>
-                      <option>Finalizado</option>
-                    </select>
+                    <label className="form-control-label">Fecha de Fin:</label>
+                    <Input
+                      className="form-control-alternative descripcion"
+                      placeholder="Inicio"
+                      type="date"
+                      required="required"
+                      onChange={(event) =>
+                        dataCathProyect(event.target.value, "dateEnd")
+                      }
+                      min={fecha}
+                    />
                   </FormGroup>
                 </Col>
               </Row>
@@ -686,7 +761,7 @@ const TableProjects = () => {
               Cerrar
             </Button>
             <Button
-              // onClick={() => alertInfo()}
+              onClick={() => onSubmitProyect()}
               className="btn btn-success"
               style={{ float: "right" }}
             >
@@ -697,7 +772,7 @@ const TableProjects = () => {
       </Modal>
 
       {/* Modal Modificar */}
-      <Modal isOpen={modal2} toggle={toggle2} size="lg">
+      {/* <Modal isOpen={modal2} toggle={toggle2} size="lg">
         <ModalHeader toggle={toggle2} style={{ backgroundColor: "#8ADFE2" }}>
           <h3 className="mb-0">Modificar Proyecto</h3>
         </ModalHeader>
@@ -830,7 +905,7 @@ const TableProjects = () => {
             </Button>
           </Form>
         </ModalBody>
-      </Modal>
+      </Modal> */}
 
       {/* Modal Registrar Departamento*/}
       <Modal isOpen={modal3} toggle={toggle3} size="lg">
@@ -967,25 +1042,156 @@ const TableProjects = () => {
       </Modal>
 
       {/*FASES*/}
-      <Modal isOpen={modal5} toggle={toggle5} size="lg">
+      <Modal isOpen={modal5} toggle={toggle5}>
         <ModalHeader toggle={toggle5} style={{ backgroundColor: "#8ADFE2" }}>
           <h3 className="mb-0">Fases</h3>
         </ModalHeader>
         <ModalBody>
           <Card className="shadow">
             <div className="pl-lg-4">
-              <BotonesAcciones />
+              <BotonesAcciones idProyect={idProyect}/>
             </div>
-            <br />
             <Button
               // type="submit"
-              className="btn btn-outline-danger"
+              className="btn btn-danger"
               onClick={toggle5}
-              style={{ maxWidth: "100px", marginLeft: "80%" }}
+              style={{ maxWidth: "100px", marginLeft: "10%" }}
             >
               Cerrar
             </Button>
             <br />
+          </Card>
+        </ModalBody>
+      </Modal>
+
+      {/* PARTICIPANTES DE PROYECTO */}
+      <Modal isOpen={modal6} toggle={toggle6} size="lg">
+        <ModalHeader toggle={toggle6} style={{ backgroundColor: "#8ADFE2" }}>
+          <h3 className="mb-0">Participantes:</h3>
+        </ModalHeader>
+        <ModalBody>
+          <Card className="shadow">
+            <Form>
+              <div className="pl-lg-4">
+                <Row>
+                  <Table className="align-items-center table-flush" responsive>
+                    <thead className="thead-light">
+                      <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col">Nombre</th>
+
+                        {/*<th scope="col" />*/}
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {
+                      (dataProyects).map((item2, i) => (
+                       <>
+                          {
+                            (item2.Users).map((it,i) => (
+                              <tr>
+                              <td><h2>{it.id}</h2></td>
+                              <td><h2>{it.email}</h2></td>
+                              </tr>
+                            ))
+                          }
+                        </>
+                      ))
+                      }
+
+                      {/* <tr>
+                        <td>1</td>
+                        <td>DEFAULT</td>
+                      </tr> */}
+                      {/* {validarContenido} */}
+
+                      {/* {(dataParticipantesID.length === undefined) ? (
+                        <tr>
+                          <td>1</td>
+                          <td>DEFAULT</td>
+                        </tr>
+                      ) : (
+                        listado
+                      )} */}
+                    </tbody>
+                  </Table>
+                </Row>
+              </div>
+            </Form>
+            <CardFooter>
+              <Button
+                type="submit"
+                color="primary"
+                onClick={toggle6}
+                style={{ float: "right", margin: "20px" }}
+              >
+                Cerrar
+              </Button>
+              {/* <Button
+                onClick={() => onSubmit()}
+                className="btn btn-success"
+                style={{ float: "right" }}
+              >
+                Registrar
+              </Button> */}
+              <Button
+                className="button btn-info"
+                style={{ margin: "20px", float: "right" }}
+                onClick={toggle7}
+              >
+                Agregar Participante
+              </Button>
+            </CardFooter>
+          </Card>
+        </ModalBody>
+
+        {/* SELCCIÓN DE NUEVO PARTICIPANTE */}
+      </Modal>
+      
+      {/* AGREGAR PARTICIPANTES */}
+      <Modal isOpen={modal7} toggle={toggle7} >
+        <ModalHeader toggle={toggle7} style={{ backgroundColor: "#8ADFE2" }}>
+          <h3 className="mb-0">Agregar Participante:</h3>
+        </ModalHeader>
+        <ModalBody>
+          <Card className="shadow">
+            <Form>
+              <div className="pl-lg-4">
+                <Row>
+                  <Col lg="4">
+                    <FormGroup>
+                      <label className="form-control-label">
+                        Seleccione al participante nuevo:
+                      </label>
+                      <select onChange={handlePos2}>
+                        <option value={-1}>Seleccione una opción:</option>
+                        {dataEmpleados.map((item, i) => (
+                          <option key={"empleado" + i} value={i}>
+                            {item.Person.name} {item.Person.lastname}
+                          </option>
+                        ))}
+                      </select>
+                    </FormGroup>
+                  </Col>
+                </Row>
+              </div>
+            </Form>
+            <CardFooter>
+              <Button
+                color="danger"
+                onClick={toggle7}
+                style={{ float: "right", margin: "20px" }}
+              >
+                Cerrar
+              </Button>
+              <Button
+                className="btn btn-success"
+                onClick={() => onSubmitAddUser()}
+                style={{ float: "right", margin: "20px" }}
+              >
+                Agregar
+              </Button>
+            </CardFooter>
           </Card>
         </ModalBody>
       </Modal>
